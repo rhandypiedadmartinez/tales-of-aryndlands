@@ -7,6 +7,7 @@ To run this program in Linux:
 Open terminal,
 type 'pip install -r requirements.txt'
 type 'python3 run.py'
+open browser, type in address bar 'localhost:5000'
 
 OR copy paste this link the web: 
 https://aryndlands.azurewebsites.net/
