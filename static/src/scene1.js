@@ -107,8 +107,8 @@ class Scene1 extends Phaser.Scene{
         this.anims.create({
             key:"miko_anim",
             frames: this.anims.generateFrameNumbers("miko"),
-            frameRate: 20,
-            repeat: 0
+            frameRate: 10,
+            repeat: -1
         })
 
         this.anims.create({

@@ -42,8 +42,8 @@ class Scene2 extends Phaser.Scene{
         this.bg_3.setOrigin(0, 0);
         this.bg_3.setScrollFactor(0);
 
-        this.miko = this.physics.add.sprite(config.width/2 - 8, 130, "miko")
-        this.miko.setScale(0.1)
+        this.miko = this.physics.add.sprite(config.width/2 - 8, 100, "miko")
+        this.miko.setScale(0.15)
         this.miko.play("miko_anim")
 
         this.hero = this.physics.add.sprite(config.width/2 - 8, 150, "hero_idle")
@@ -59,10 +59,10 @@ class Scene2 extends Phaser.Scene{
         this.ground.setScrollFactor(0);
         this.ground.y = 12 * 14
 
-        this.player =  this.physics.add.sprite(config.width/2 -8,config.height-64,"player")
-        this.player.play("thrust")
-        this.cursorKeys = this.input.keyboard.createCursorKeys()
-        this.player.setCollideWorldBounds(true)
+        // this.player =  this.physics.add.sprite(config.width/2 -8,config.height-64,"player")
+        // this.player.play("thrust")
+        // this.cursorKeys = this.input.keyboard.createCursorKeys()
+        // this.player.setCollideWorldBounds(true)
 
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
         this.projectiles = this.add.group()
@@ -73,82 +73,82 @@ class Scene2 extends Phaser.Scene{
         // this.snail2 = this.add.image(config.width/2, config.height/2, 'snail')
         // this.snail3 = this.add.image(config.width/2+100, co  nfig.height/2, 'snail')
         
-        this.obj1 = this.add.sprite(config.width/2-100, config.height/2, 'ship1')
-        this.obj2 = this.add.sprite(config.width/2, config.height/2, 'ship2')
-        this.obj3 = this.add.sprite(config.width/2+100, config.height/2, 'ship3')
+        // this.obj1 = this.add.sprite(config.width/2-100, config.height/2, 'ship1')
+        // this.obj2 = this.add.sprite(config.width/2, config.height/2, 'ship2')
+        // this.obj3 = this.add.sprite(config.width/2+100, config.height/2, 'ship3')
 
-        this.powerUps = this.physics.add.group()
+        // this.powerUps = this.physics.add.group()
 
-        var maxObjects = 4
-        for (var i = 0; i <= maxObjects; i++){
-            var powerUp = this.physics.add.sprite(16,16,"power-up")
-            this.powerUps.add(powerUp)
-            powerUp.setRandomPosition(0,0,config.width,config.height)
+        // var maxObjects = 4
+        // for (var i = 0; i <= maxObjects; i++){
+        //     var powerUp = this.physics.add.sprite(16,16,"power-up")
+        //     this.powerUps.add(powerUp)
+        //     powerUp.setRandomPosition(0,0,config.width,config.height)
         
-            if (Math.random() > 0.5){
-                powerUp.play("red")
-            } else {
-                powerUp.play("gray")
-            }
+        //     if (Math.random() > 0.5){
+        //         powerUp.play("red")
+        //     } else {
+        //         powerUp.play("gray")
+        //     }
     
-            powerUp.setVelocity(100,100)
-            powerUp.setCollideWorldBounds(true)
-            powerUp.setBounce(1)
+        //     powerUp.setVelocity(100,100)
+        //     powerUp.setCollideWorldBounds(true)
+        //     powerUp.setBounce(1)
         
     
-        }
+        // }
 
-        this.projectiles = this.add.group();
+        // this.projectiles = this.add.group();
 
-        for(var i = 0; i < this.projectiles.getChildren().length; i++){
-            var beam = this.projectiles.getChildren()[i];
-            beam.update();
-        }
+        // for(var i = 0; i < this.projectiles.getChildren().length; i++){
+        //     var beam = this.projectiles.getChildren()[i];
+        //     beam.update();
+        // }
   
         //this.obj1.setScale(2)
         //this.obj2.setScale(2)
         //this.obj3.setScale(2)
 
-        this.obj1.play("ship1_anim")
-        this.obj2.play("ship2_anim")
-        this.obj3.play("ship3_anim")
+        // this.obj1.play("ship1_anim")
+        // this.obj2.play("ship2_anim")
+        // this.obj3.play("ship3_anim")
 
-        this.obj1.setInteractive()
-        this.obj2.setInteractive() 
-        this.obj3.setInteractive()
+        // this.obj1.setInteractive()
+        // this.obj2.setInteractive() 
+        // this.obj3.setInteractive()
 
-        this.input.on('gameobjectdown',this.destroyObj, this)
+        // this.input.on('gameobjectdown',this.destroyObj, this)
         
-        //  this.add.text(20,20,"Playing Game",{font: "25px Arial",fill:"Yellow"});
+        // //  this.add.text(20,20,"Playing Game",{font: "25px Arial",fill:"Yellow"});
 
-        // this.physics.add.collider(this.projectiles, this.powerUps)
-        this.physics.add.collider(this.projectiles, this.powerUps, function(projectile,powerUp){
-            projectile.destroy()
-        })
+        // // this.physics.add.collider(this.projectiles, this.powerUps)
+        // this.physics.add.collider(this.projectiles, this.powerUps, function(projectile,powerUp){
+        //     projectile.destroy()
+        // })
         
-        this.physics.add.overlap(this.player, this.powerUps, this.pickPowerUp, null, this)
+        // this.physics.add.overlap(this.player, this.powerUps, this.pickPowerUp, null, this)
 
-        this.enemies = this.physics.add.group()
-        this.enemies.add(this.obj1)
-        this.enemies.add(this.obj2)
-        this.enemies.add(this.obj3)
+        // this.enemies = this.physics.add.group()
+        // this.enemies.add(this.obj1)
+        // this.enemies.add(this.obj2)
+        // this.enemies.add(this.obj3)
 
-        this.physics.add.overlap(this.player, this.enemies, this.hurtPlayer, null, this)
-        this.physics.add.overlap(this.projectiles, this.enemies, this.hitEnemy, null, this)
+        // this.physics.add.overlap(this.player, this.enemies, this.hurtPlayer, null, this)
+        // this.physics.add.overlap(this.projectiles, this.enemies, this.hitEnemy, null, this)
     
-        var graphics = this.add.graphics()
-        graphics.fillStyle(0x0000000, 1)
-        graphics.beginPath()
-        graphics.moveTo(0,0) 
-        graphics.lineTo(config.width, 0)
-        graphics.lineTo(config.width, 20)
-        graphics.lineTo(0,20)
-        graphics.lineTo(0,0)
-        graphics.closePath()
-        graphics.fillPath()
+        // var graphics = this.add.graphics()
+        // graphics.fillStyle(0x0000000, 1)
+        // graphics.beginPath()
+        // graphics.moveTo(0,0) 
+        // graphics.lineTo(config.width, 0)
+        // graphics.lineTo(config.width, 20)
+        // graphics.lineTo(0,20)
+        // graphics.lineTo(0,0)
+        // graphics.closePath()
+        // graphics.fillPath()
 
              
-        this.scorelabel = this.add.bitmapText(10,5,"pixelFont","SCORE",16)
+        // this.scorelabel = this.add.bitmapText(10,5,"pixelFont","SCORE",16)
 
 
     }
@@ -215,12 +215,12 @@ class Scene2 extends Phaser.Scene{
         powerUp.disableBody(true, true)
     }
 
-    move(obj, speed){
-        obj.y += speed
-        if (obj.y > config.height){
-            this.resetPos(obj)
-        }
-    }
+    // move(obj, speed){
+    //     obj.y += speed
+    //     if (obj.y > config.height){
+    //         this.resetPos(obj)
+    //     }
+    // }
 
     resetPos(obj){
         obj.y = 0
@@ -235,20 +235,20 @@ class Scene2 extends Phaser.Scene{
         //this.obj2.angle -= 1
         //this.obj3.angle += 2
         
-        this.move(this.obj1, 1)
-        this.move(this.obj2, 1)
-        this.move(this.obj3, 1)
+        // this.move(this.obj1, 1)
+        // this.move(this.obj2, 1)
+        // this.move(this.obj3, 1)
 
         //this.background.tilePositionY -= 0.5
 
-        this.movePlayerManager()
+        // // this.movePlayerManager()
 
-        if (Phaser.Input.Keyboard.JustDown(this.spacebar)){
-            this.hero.play('hero_idle_anim')
-            if (this.player.active){
-                this.shootBeam()
-           }
-        }
+        // if (Phaser.Input.Keyboard.JustDown(this.spacebar)){
+        //     this.hero.play('hero_idle_anim')
+        //     if (this.player.active){
+        //         this.shootBeam()
+        //    }
+        // }
         this.bg_1.tilePositionX = this.myCam.scrollX * .3
         this.bg_2.tilePositionX = this.myCam.scrollX * .6
         this.bg_3.tilePositionX = this.myCam.scrollX
