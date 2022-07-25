@@ -256,10 +256,10 @@ class Scene2 extends Phaser.Scene{
     }
 
     moveHeroManager(){
-        var RisDown = this.cursorKeys.right.isDown
-        var LisDown = this.cursorKeys.left.isDown
-        var RisUp = this.cursorKeys.right.isUp
-        var LisUp = this.cursorKeys.left.isUp
+        var RisDown = this.cursors.right.isDown
+        var LisDown = this.cursors.left.isDown
+        var RisUp = this.cursors.right.isUp
+        var LisUp = this.cursors.left.isUp
 
         if (RisDown && LisUp && this.hero.x < game.config.width * 3) {
             this.hero.x += 3;
@@ -291,11 +291,12 @@ class Scene2 extends Phaser.Scene{
         var RjustDown = Phaser.Input.Keyboard.JustDown(this.cursors.right)
         var LjustDown = Phaser.Input.Keyboard.JustDown(this.cursors.left)
         var UjustDown = Phaser.Input.Keyboard.JustDown(this.cursors.up)
-        var RisDown = this.cursorKeys.right.isDown
-        var LisDown = this.cursorKeys.left.isDown
-        var RisUp = this.cursorKeys.right.isUp
-        var LisUp = this.cursorKeys.left.isUp
+        var RisDown = this.cursors.right.isDown
+        var LisDown = this.cursors.left.isDown
+        var RisUp = this.cursors.right.isUp
+        var LisUp = this.cursors.left.isUp
 
+        //var SpacejustDown = 
         // Stop Running Right
         if (RjustUp){   
             this.hero.play("hero_idle_anim")
@@ -318,8 +319,13 @@ class Scene2 extends Phaser.Scene{
             this.hero.scaleX = -1;
         }
 
+        if (LisDown && RisDown){
+            this.hero.play("hero_idle_anim")
+            return
+        }
+        
         // Running then Jumping
-        if ((LisDown || RisDown) && UjustDown){
+        if ((LisDown || RisDown) && UjustDown && this.isGravityEnabled()){
             this.heroSpeed.y -=  10
             this.hero.play("hero_jump_anim")
             this.hero.once('animationcomplete', ()=> {
@@ -328,7 +334,7 @@ class Scene2 extends Phaser.Scene{
         }
 
         // Standing then Jumping
-        if ((LisUp && RisUp) && UjustDown){
+        if ((LisUp && RisUp) && UjustDown && this.isGravityEnabled()){
             this.heroSpeed.y -=  10
             this.hero.play("hero_jump_anim")
             this.hero.once('animationcomplete', ()=> {
@@ -342,6 +348,14 @@ class Scene2 extends Phaser.Scene{
         
         
 
+
+    }
+
+    isGravityEnabled(){
+        if (this.hero.y == 151){
+            return true
+        }
+        return false
     }
 
     shootBeam(){
