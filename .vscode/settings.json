@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/2c1c686b-bd42-431a-8578-c967f827a12f/microsoft.web/sites/subscriptions/2c1c686b-bd42-431a-8578-c967f827a12f/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/aryndlands",
+    "appService.deploySubpath": "."
+}
