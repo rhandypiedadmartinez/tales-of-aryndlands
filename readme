@@ -1,0 +1,12 @@
+Credits to Itch.io owners of the free spritesheets and sounds in this game
+
+This project is my experimentation on JS or PhaserJS game on Flask framework as a JS Newbie XD
+Most of the commented codes are from a tutorial series: https://youtu.be/frRWKxB9Hm0 and used as a reference for learning
+
+To run this program in Linux:
+Open terminal,
+type 'pip install -r requirements.txt'
+type 'python3 run.py'
+
+OR copy paste this link the web: 
+https://aryndlands.azurewebsites.net/
