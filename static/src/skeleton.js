@@ -29,7 +29,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         // } 
         var newDirection = this.getDirection(scene.hero.x,this.x)
 
-        this.updateAnim(newDirection)
+        this.updateAnim(scene, newDirection)
 
         this.direction = this.getDirection(scene.hero.x,this.x)
         this.scaleX = this.getFacing(scene.hero.x,this.x)
@@ -38,22 +38,54 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         if (this.health == 0){
             this.destroy()
         }        
+
+        this.isTakeHit(scene)
     }
 
-    attackAnim(){
-    }
-
-    updateAnim(newDirection){
+    updateAnim(scene, newDirection){
+        //console.log(this.anims.getName())
+        //console.log(this.anims.duration)
         if (this.direction != newDirection){
             if (newDirection == 0){
                 if (this.goAttack){
                     this.play('skeleton_attack_anim')
-                } else {
-                    this.play('skeleton_idle_anim')
+                    return
                 }
+                this.play('skeleton_idle_anim')        
             } else {
                 this.play('skeleton_walk_anim')
             }
+        }
+    }
+
+    isTakeHit(scene){
+        if (this.anims.getName() == 'skeleton_attack_anim'){
+            // attack animation complete
+            if (this.anims.getProgress()==1){
+                scene.hero.playAfterDelay('hero_hurt_anim',40)
+                scene.hero.once('animationcomplete',()=>{
+                    scene.hero.play('hero_idle_anim')
+                })
+                scene.heroHealth -= 1
+            }
+            // if (this.anims.currentFrame.index == 2){
+            //     scene.hero.playAfterDelay('hero_hurt_anim',150)
+            //     scene.heroHealth -= 1
+            // }
+            //     //    console.log(this.anims.getName())
+            // console.log(this.anims.currentFrame.index)
+            // //this.anims.pause()
+
+        }
+
+        var thisX = this.x
+        var heroX = scene.hero.x
+        if (thisX + 40 > heroX){  
+            this.goAttack = true
+        }
+        if (thisX - 40 < heroX){
+ 
+            this.goAttack = true
         }
     }
 

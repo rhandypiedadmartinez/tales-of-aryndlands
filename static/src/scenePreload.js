@@ -35,6 +35,11 @@ class Scene1 extends Phaser.Scene{
             frameHeight: 64
         })
 
+        this.load.spritesheet('hero_hurt','static/assets/spritesheets/knight/Hurt.png',{
+            frameWidth: 128,
+            frameHeight: 64
+        })
+
         this.load.spritesheet('skeleton_idle','static/assets/spritesheets/monsters/Skeleton/Idle.png',{
             frameWidth: 150,
             frameHeight: 150
@@ -54,6 +59,7 @@ class Scene1 extends Phaser.Scene{
             frameWidth: 150,
             frameHeight: 150
         })
+
 
         this.load.spritesheet('miko','static/assets/spritesheets/miko.png',{
             frameWidth: 561,
@@ -154,6 +160,16 @@ class Scene1 extends Phaser.Scene{
         })
 
         this.anims.create({
+            key:"hero_hurt_anim",
+            frames: this.anims.generateFrameNumbers("hero_hurt",{
+                start: 0,
+                end: 2
+            }),
+            frameRate: 5,
+            repeat: 0
+        })
+
+        this.anims.create({
             key:"skeleton_idle_anim",
             frames: this.anims.generateFrameNumbers("skeleton_idle",{
                 start: 0,
@@ -177,10 +193,10 @@ class Scene1 extends Phaser.Scene{
         this.anims.create({
             key:"skeleton_attack_anim",
             frames: this.anims.generateFrameNumbers("skeleton_attack",{
-                start: 0,
-                end: 3
+                start: 1,
+                end: 8
             }),
-            frameRate: 5,
+            frameRate: 10,
             repeat: -1
         })
 

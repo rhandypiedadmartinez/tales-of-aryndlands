@@ -7,7 +7,7 @@ class Scene2 extends Phaser.Scene{
     }
 
     create(){
-        
+        this.heroHealth = 100
         this.heroSpeed = new Phaser.Math.Vector2(0,0)
 
         this.beamSound = this.sound.add("audio_beam")
@@ -154,36 +154,33 @@ class Scene2 extends Phaser.Scene{
         // this.physics.add.overlap(this.player, this.enemies, this.hurtPlayer, null, this)
         // this.physics.add.overlap(this.projectiles, this.enemies, this.hitEnemy, null, this)
     
-        // var graphics = this.add.graphics()
-        // graphics.fillStyle(0x0000000, 1)
-        // graphics.beginPath()
-        // graphics.moveTo(0,0) 
-        // graphics.lineTo(config.width, 0)
-        // graphics.lineTo(config.width, 20)
-        // graphics.lineTo(0,20)
-        // graphics.lineTo(0,0)
-        // graphics.closePath()
-        // graphics.fillPath()
+        var graphics = this.add.graphics()
+        graphics.fillStyle(0x0000000, 1)
+        graphics.beginPath()
+        graphics.moveTo(0,0) 
+        graphics.lineTo(config.width, 0)
+        graphics.lineTo(config.width, 20)
+        graphics.lineTo(0,20)
+        graphics.lineTo(0,0)
+        graphics.closePath()
+        graphics.fillPath()
 
              
-        // this.scorelabel = this.add.bitmapText(10,5,"pixelFont","SCORE",16)
+        this.scorelabel = this.add.bitmapText(10,5,"pixelFont","HEALTH: ",16)
 
 
     }
 
     enemyAttack(hero, enemy){
-        enemy.attackAnim()
+        //enemy.attackAnim()
     }
 
     hitEnemy(projectile, enemy){
-        this.explosionSound.play()
+        //this.explosionSound.play()
         //projectile.destroy()
-        this.score += 15
+        //this.score += 15
 
-        var scoreFormatted = this.zeroPad(this.score, 6)
-
-        this.scorelabel.text = "SCORE: " + scoreFormatted
-        var explosion = new Explosion(this, enemy.x, enemy.y)
+        //var explosion = new Explosion(this, enemy.x, enemy.y)
         // this.explosion = this.add.sprite(enemy.x,enemy.y, 'explosion')
         // this.explosion.play('explode')
         // this.explosion.once('animationcomplete', ()=> 
@@ -251,6 +248,10 @@ class Scene2 extends Phaser.Scene{
     }
 
     update(){
+        var scoreFormatted = this.zeroPad(this.heroHealth, 2)
+
+        this.scorelabel.text = "HEALTH: " + scoreFormatted
+
         for(var i = 0; i < this.enemies.getChildren().length; i++){
             var enemy = this.enemies.getChildren()[i];
             enemy.update(this);
@@ -341,6 +342,9 @@ class Scene2 extends Phaser.Scene{
 
         if (this.SpacejustDown){
             this.hero.play("hero_attack_anim")
+            this.hero.once('animationcomplete',()=> {
+                this.hero.play("hero_idle_anim")
+            })
         }
 
         //console.log(this.cursors.space.getDuration())
@@ -487,11 +491,11 @@ class Scene2 extends Phaser.Scene{
     //     }
     // }
 
-    // zeroPad(number, size){
-    //     var stringNumber = String(number)
-    //     while(stringNumber.length < (size)){
-    //         stringNumber = "0" + stringNumber
-    //     }
-    //     return stringNumber
-    // }
+    zeroPad(number, size){
+        var stringNumber = String(number)
+        while(stringNumber.length < (size)){
+            stringNumber = "0" + stringNumber
+        }
+        return stringNumber
+    }
 }
