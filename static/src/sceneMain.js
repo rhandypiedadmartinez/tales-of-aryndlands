@@ -49,7 +49,7 @@ class Scene2 extends Phaser.Scene{
 
         this.hero = this.physics.add.sprite(config.width/2 - 8, 150, "hero_idle")
         this.hero.play("hero_idle_anim")
-        
+       // this.hero.setCollideWorldBounds(true)
         //this.sk = this.physics.add.sprite(config.width/2 - 8, 160, "skeleton_idle")
         //this.sk.play("skeleton_idle_anim")
 
@@ -73,10 +73,15 @@ class Scene2 extends Phaser.Scene{
         // this.player.setCollideWorldBounds(true)
 
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
-        this.projectiles = this.add.group()
+//      this.projectiles = this.add.group()
+        this.enemies = this.physics.add.group()
+        for(var i = 0; i < this.enemies.getChildren().length; i++){
+            var enemy = this.enemies.getChildren()[i];
+            enemy.update();
+        }
 
-        this.LRlocked = false
-
+        this.keyObj = this.input.keyboard.addKey('W');  // Get key object
+        
         //this.add.image(100,100,'ysnail')
         // this.snail1 = this.add.image(config.width/2-100, config.height/2, 'snail')
         // this.snail2 = this.add.image(config.width/2, config.height/2, 'snail')
@@ -238,8 +243,27 @@ class Scene2 extends Phaser.Scene{
     }
 
     update(){
-        this.moveHeroManager()
+        var wDown = this.input.keyboard.checkDown(this.keyObj, 10);
 
+        this.RjustUp = Phaser.Input.Keyboard.JustUp(this.cursors.right) 
+        this.LjustUp = Phaser.Input.Keyboard.JustUp(this.cursors.left)
+        
+        this.RjustDown = Phaser.Input.Keyboard.JustDown(this.cursors.right)
+        this.LjustDown = Phaser.Input.Keyboard.JustDown(this.cursors.left)
+        this.UjustDown = Phaser.Input.Keyboard.JustDown(this.cursors.up)
+        
+        this.RisDown = this.cursors.right.isDown
+        this.LisDown = this.cursors.left.isDown
+        this.UisDown = this.cursors.up.isDown
+        this.SpaceisDown = this.cursors.space.isDown
+        
+        this.RisUp = this.cursors.right.isUp
+        this.LisUp = this.cursors.left.isUp
+
+        this.SpacejustDown = Phaser.Input.Keyboard.JustDown(this.cursors.space)
+        this.SpaceLimit = this.input.keyboard.checkDown(this.cursors.space, 1000);
+
+        this.moveHeroManager()
         //this.obj1.angle += 1
         //this.obj2.angle -= 1
         //this.obj3.angle += 2
@@ -263,6 +287,7 @@ class Scene2 extends Phaser.Scene{
         this.bg_3.tilePositionX = this.myCam.scrollX
         this.miko.tilePositionX = this.myCam.scrollX
         this.ground.tilePositionX = this.myCam.scrollX
+
     }
 
     gravitate(){
@@ -286,32 +311,40 @@ class Scene2 extends Phaser.Scene{
     }
 
     moveHeroManager(){
-        var RisDown = this.cursors.right.isDown
-        var LisDown = this.cursors.left.isDown
-        var RisUp = this.cursors.right.isUp
-        var LisUp = this.cursors.left.isUp
-        var RjustUp = Phaser.Input.Keyboard.JustUp(this.cursors.right) 
-        var LjustUp = Phaser.Input.Keyboard.JustUp(this.cursors.left)
-        
-        if (RisDown && LisDown && this.isGravityEnabled()){
-            this.LRlocked = true
+        this.attackair = this.SpaceisDown
+
+        if (this.SpacejustDown){
+            this.spawnSkeleton()
         }
 
-        // if (RjustUp || LjustUp){
-        //     this.LRlocked = false
-        // }
+        if (this.cursors.up.getDuration() < 500){
+            if (this.SpacejustDown && this.UisDown && this.isGravityEnabled){
+                this.hero.play("hero_attack_air_anim")
+                this.hero.once('animationcomplete', ()=> {
+                this.hero.play("hero_run_anim")
+                })
+                return
+            }
+        }
+        
+        if (this.SpacejustDown){
+            this.hero.play("hero_attack_anim")
+        }
 
-        // if (this.LRlocked){
-        //     this.hero.play('hero_idle_anim')
-        //     return
-        // }
+        //console.log(this.cursors.space.getDuration())
 
-    
-        if (RisDown && LisUp && this.hero.x < game.config.width * 3) {
+        if (this.SpaceisDown && this.isGravityEnabled()){
+            if (this.cursors.space.getDuration() < 500){
+                this.heroSpeed.x = 0
+                return
+            } 
+        }
+
+        if (this.RisDown && this.LisUp && this.hero.x < game.config.width * 3) {
             this.heroSpeed.x += 1;
         }
 
-        if (LisDown && RisUp && this.hero.x > 0) {
+        if (this.LisDown && this.RisUp && this.hero.x > 0) {
             this.heroSpeed.x -= 1;
         } 
         //console.log(this.heroSpeed.x)
@@ -323,29 +356,14 @@ class Scene2 extends Phaser.Scene{
     }
 
     HeroSpriteChange(){
-        var RjustUp = Phaser.Input.Keyboard.JustUp(this.cursors.right) 
-        var LjustUp = Phaser.Input.Keyboard.JustUp(this.cursors.left)
-        var RjustDown = Phaser.Input.Keyboard.JustDown(this.cursors.right)
-        var LjustDown = Phaser.Input.Keyboard.JustDown(this.cursors.left)
-        var UjustDown = Phaser.Input.Keyboard.JustDown(this.cursors.up)
-        var SpacejustDown = Phaser.Input.Keyboard.JustDown(this.cursors.space)
-
-        var RisDown = this.cursors.right.isDown
-        var LisDown = this.cursors.left.isDown
-        var UisDown = this.cursors.up.isDown
-        var SpaceisDown = this.cursors.space.isDown
-        
-        var RisUp = this.cursors.right.isUp
-        var LisUp = this.cursors.left.isUp
-
         // Running Right
-        if (RjustDown){
+        if (this.RjustDown){
             this.hero.play("hero_run_anim")
             return
         }
 
         // Running Left
-        if (LjustDown){
+        if (this.LjustDown){
             this.hero.play("hero_run_anim")
             return
         }
@@ -359,10 +377,10 @@ class Scene2 extends Phaser.Scene{
         // to check if L or R is released from pressing both LR
         if (this.checkNotMovingX() == false){
             this.hero.play("hero_run_anim")
-            if (LisDown){
+            if (this.LisDown){
                 this.hero.scaleX =  -1;
             }
-            if (RisDown){
+            if (this.RisDown){
                 this.hero.scaleX =  1;
             }
         }
@@ -379,8 +397,8 @@ class Scene2 extends Phaser.Scene{
         // Running then Jumping
 
         // Running then Jumping
-        if ((LisDown || RisDown) && UjustDown && this.isGravityEnabled()){
-            this.heroSpeed.y -=  10 
+        if ((this.LisDown || this.RisDown) && this.UjustDown && this.isGravityEnabled()){
+            this.heroSpeed.y -=  15 
             this.hero.play("hero_jump_anim")
             this.hero.once('animationcomplete', ()=> {
                 this.hero.play("hero_run_anim")
@@ -396,18 +414,15 @@ class Scene2 extends Phaser.Scene{
         // }
 
         // Standing then Jumping
-        if ((LisUp && RisUp) && UjustDown && this.isGravityEnabled()){
-            this.heroSpeed.y -=  10
+        if ((this.LisUp && this.RisUp) && this.UjustDown && this.isGravityEnabled()){
+            this.heroSpeed.y -=  15
             this.hero.play("hero_jump_anim")
             this.hero.once('animationcomplete', ()=> {
                 this.hero.play("hero_idle_anim")
             })
         }
-        if (SpacejustDown){
-            console.log('RRR')
-            this.spawnSkeleton()
-        }
-        if (Phaser.Input.Keyboard.JustDown(this.spacebar) && this.heroSpeed.x == 0){
+
+        if (this.SpacejustDown){
             this.hero.play('hero_attack_anim')
             this.hero.once('animationcomplete', ()=> {
                 this.hero.play("hero_idle_anim")
@@ -445,26 +460,26 @@ class Scene2 extends Phaser.Scene{
         gameObject.play("explode")
     }
 
-    movePlayerManager(){
-        this.player.setVelocity(0);
-        if (this.cursorKeys.left.isDown){
-            this.player.setVelocityX(-gameSettings.playerSpeed)
-        } else if (this.cursorKeys.right.isDown){
-            this.player.setVelocityX(gameSettings.playerSpeed)
-        }
+    // movePlayerManager(){
+    //     this.player.setVelocity(0);
+    //     if (this.cursorKeys.left.isDown){
+    //         this.player.setVelocityX(-gameSettings.playerSpeed)
+    //     } else if (this.cursorKeys.right.isDown){
+    //         this.player.setVelocityX(gameSettings.playerSpeed)
+    //     }
 
-        if (this.cursorKeys.up.isDown){
-            this.player.setVelocityY(-gameSettings.playerSpeed)
-        } else if (this.cursorKeys.down.isDown){
-            this.player.setVelocityY(gameSettings.playerSpeed)
-        }
-    }
+    //     if (this.cursorKeys.up.isDown){
+    //         this.player.setVelocityY(-gameSettings.playerSpeed)
+    //     } else if (this.cursorKeys.down.isDown){
+    //         this.player.setVelocityY(gameSettings.playerSpeed)
+    //     }
+    // }
 
-    zeroPad(number, size){
-        var stringNumber = String(number)
-        while(stringNumber.length < (size)){
-            stringNumber = "0" + stringNumber
-        }
-        return stringNumber
-    }
+    // zeroPad(number, size){
+    //     var stringNumber = String(number)
+    //     while(stringNumber.length < (size)){
+    //         stringNumber = "0" + stringNumber
+    //     }
+    //     return stringNumber
+    // }
 }
