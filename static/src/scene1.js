@@ -35,6 +35,11 @@ class Scene1 extends Phaser.Scene{
             frameHeight: 64
         })
 
+        this.load.spritesheet('skeleton','static/assets/spritesheets/monsters/Skeleton/Attack3.png',{
+            frameWidth: 900/6,
+            frameHeight: 150
+        })
+
         this.load.spritesheet('miko','static/assets/spritesheets/miko.png',{
             frameWidth: 561,
             frameHeight: 1105   
@@ -89,7 +94,6 @@ class Scene1 extends Phaser.Scene{
     }
 
     create(){
-  
         this.add.text(20,20,"Loading Game...");
         this.scene.start("playGame");
 
@@ -133,6 +137,17 @@ class Scene1 extends Phaser.Scene{
             frameRate: 10,
             repeat: 0
         })
+
+        this.anims.create({
+            key:"skeleton_anim",
+            frames: this.anims.generateFrameNumbers("skeleton",{
+                start: 1,
+                end: 6
+            }),
+            frameRate: 20,
+            repeat: -1
+        })
+
 
         this.anims.create({
             key:"miko_anim",

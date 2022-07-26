@@ -60,6 +60,10 @@ class Scene2 extends Phaser.Scene{
         this.ground.setScrollFactor(0);
         this.ground.y = 12 * 14
 
+
+        //this.sk = this.physics.add.sprite(config.width/2 - 8, 120, "skeleton")
+        //this.sk.play("skeleton_anim")
+
         // this.player =  this.physics.add.sprite(config.width/2 -8,config.height-64,"player")
         // this.player.play("thrust")
         // this.cursorKeys = this.input.keyboard.createCursorKeys()
@@ -69,6 +73,7 @@ class Scene2 extends Phaser.Scene{
         this.projectiles = this.add.group()
 
         this.LRlocked = false
+
         //this.add.image(100,100,'ysnail')
         // this.snail1 = this.add.image(config.width/2-100, config.height/2, 'snail')
         // this.snail2 = this.add.image(config.width/2, config.height/2, 'snail')
