@@ -300,7 +300,7 @@ class Scene2 extends Phaser.Scene{
         this.bg_3.tilePositionX = this.myCam.scrollX
         this.miko.tilePositionX = this.myCam.scrollX
         this.ground.tilePositionX = this.myCam.scrollX
-        this.scorelabel.x = this.myCam.scrollX + config.width * 0.80 
+        this.scorelabel.x = this.myCam.scrollX + config.width * 0.40 
     }
 
     gravitate(){

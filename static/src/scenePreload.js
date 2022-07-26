@@ -60,6 +60,12 @@ class Scene1 extends Phaser.Scene{
             frameHeight: 150
         })
 
+        this.load.spritesheet('skeleton_death','static/assets/spritesheets/monsters/Skeleton/Death.png',{
+            frameWidth: 150,
+            frameHeight: 150
+        })
+
+
 
         this.load.spritesheet('miko','static/assets/spritesheets/miko.png',{
             frameWidth: 561,
@@ -196,7 +202,7 @@ class Scene1 extends Phaser.Scene{
                 start: 1,
                 end: 7
             }),
-            frameRate: 10,
+            frameRate: 20,
             repeat: -1
         })
 
@@ -207,9 +213,18 @@ class Scene1 extends Phaser.Scene{
                 end: 3
             }),
             frameRate: 5,
-            repeat: -1
+            repeat: 0
         })
 
+        this.anims.create({
+            key:"skeleton_death_anim",
+            frames: this.anims.generateFrameNumbers("skeleton_death",{
+                start: 0,
+                end: 2
+            }),
+            frameRate: 5,
+            repeat: 0
+        })
         this.anims.create({
             key:"miko_anim",
             frames: this.anims.generateFrameNumbers("miko"),
