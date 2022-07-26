@@ -1,6 +1,6 @@
 class Skeleton extends Phaser.GameObjects.Sprite{
     constructor(scene){
-        var x = scene.hero.x + 200
+        var x = scene.hero.x + 300
         var y = 160
         super(scene,x,y,"skeleton_walk")
 
@@ -39,7 +39,8 @@ class Skeleton extends Phaser.GameObjects.Sprite{
             this.destroy()
         }        
 
-        this.isTakeHit(scene)
+        this.isAttackHitHero(scene)
+        this.isHeroTakeHit(scene)
     }
 
     updateAnim(scene, newDirection){
@@ -48,7 +49,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         if (this.direction != newDirection){
             if (newDirection == 0){
                 if (this.goAttack){
-                    this.play('skeleton_attack_anim')
+                    //this.play('skeleton_attack_anim')
                     return
                 }
                 this.play('skeleton_idle_anim')        
@@ -58,16 +59,18 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         }
     }
 
-    isTakeHit(scene){
+    isAttackHitHero(scene){
+        // skeleton hurt hero
         if (this.anims.getName() == 'skeleton_attack_anim'){
             // attack animation complete
             if (this.anims.getProgress()==1){
-                scene.hero.playAfterDelay('hero_hurt_anim',40)
+                scene.hero.playAfterDelay('hero_hurt_anim',80)
                 scene.hero.once('animationcomplete',()=>{
-                    scene.hero.play('hero_idle_anim')
+                    scene.hero.play('hero_run_anim')
                 })
                 scene.heroHealth -= 1
             }
+        }
             // if (this.anims.currentFrame.index == 2){
             //     scene.hero.playAfterDelay('hero_hurt_anim',150)
             //     scene.heroHealth -= 1
@@ -75,8 +78,6 @@ class Skeleton extends Phaser.GameObjects.Sprite{
             //     //    console.log(this.anims.getName())
             // console.log(this.anims.currentFrame.index)
             // //this.anims.pause()
-
-        }
 
         var thisX = this.x
         var heroX = scene.hero.x
@@ -87,6 +88,20 @@ class Skeleton extends Phaser.GameObjects.Sprite{
  
             this.goAttack = true
         }
+    }
+    
+    isHeroTakeHit(scene){
+        // console.log(scene.hero.anims.getName())
+        // //hero hurt skeleton
+        if (scene.hero.anims.getName() == 'hero_attack_anim'){
+        
+            //     console.log(this.health)
+        //     this.health -= 1
+        //     this.play('skeleton_takehit_anim')
+        //     this.onc`e('animationcomplete',()=>{
+        //         this.play('skeleton_attack_anim')
+        //     })
+         }
     }
 
     getFacing(heroX,thisX ){

@@ -145,7 +145,7 @@ class Scene1 extends Phaser.Scene{
                 start: 1,
                 end: 19
             }),
-            frameRate: 20,
+            frameRate: 30,
             repeat: 1
         })
 
@@ -166,7 +166,7 @@ class Scene1 extends Phaser.Scene{
                 end: 2
             }),
             frameRate: 5,
-            repeat: 0
+            repeat: 1
         })
 
         this.anims.create({
@@ -194,7 +194,7 @@ class Scene1 extends Phaser.Scene{
             key:"skeleton_attack_anim",
             frames: this.anims.generateFrameNumbers("skeleton_attack",{
                 start: 1,
-                end: 8
+                end: 7
             }),
             frameRate: 10,
             repeat: -1

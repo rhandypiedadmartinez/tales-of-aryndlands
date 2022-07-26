@@ -154,16 +154,16 @@ class Scene2 extends Phaser.Scene{
         // this.physics.add.overlap(this.player, this.enemies, this.hurtPlayer, null, this)
         // this.physics.add.overlap(this.projectiles, this.enemies, this.hitEnemy, null, this)
     
-        var graphics = this.add.graphics()
-        graphics.fillStyle(0x0000000, 1)
-        graphics.beginPath()
-        graphics.moveTo(0,0) 
-        graphics.lineTo(config.width, 0)
-        graphics.lineTo(config.width, 20)
-        graphics.lineTo(0,20)
-        graphics.lineTo(0,0)
-        graphics.closePath()
-        graphics.fillPath()
+        // var graphics = this.add.graphics()
+        // graphics.fillStyle(0x0000000, 1)
+        // graphics.beginPath()
+        // graphics.moveTo(0,0) 
+        // graphics.lineTo(config.width, 0)
+        // graphics.lineTo(config.width, 20)
+        // graphics.lineTo(0,20)
+        // graphics.lineTo(0,0)
+        // graphics.closePath()
+        // graphics.fillPath()
 
              
         this.scorelabel = this.add.bitmapText(10,5,"pixelFont","HEALTH: ",16)
@@ -300,7 +300,7 @@ class Scene2 extends Phaser.Scene{
         this.bg_3.tilePositionX = this.myCam.scrollX
         this.miko.tilePositionX = this.myCam.scrollX
         this.ground.tilePositionX = this.myCam.scrollX
-
+        this.scorelabel.x = this.myCam.scrollX + config.width * 0.80 
     }
 
     gravitate(){
@@ -357,11 +357,11 @@ class Scene2 extends Phaser.Scene{
         }
 
         if (this.RisDown && this.LisUp && this.hero.x < game.config.width * 3) {
-            this.heroSpeed.x += 1;
+            this.heroSpeed.x += 1.25;
         }
 
         if (this.LisDown && this.RisUp && this.hero.x > 0) {
-            this.heroSpeed.x -= 1;
+            this.heroSpeed.x -= 1.25;
         } 
         //console.log(this.heroSpeed.x)
 
@@ -462,10 +462,10 @@ class Scene2 extends Phaser.Scene{
         return false
     }
 
-    shootBeam(){
-        var beam = new Beam(this)
-        this.beamSound.play()
-    }
+    // shootBeam(){
+    //     var beam = new Beam(this)
+    //     this.beamSound.play()
+    // }
 
     spawnSkeleton(){
         var skeleton = new Skeleton(this)
