@@ -320,8 +320,13 @@ class Scene2 extends Phaser.Scene{
         var RjustDown = Phaser.Input.Keyboard.JustDown(this.cursors.right)
         var LjustDown = Phaser.Input.Keyboard.JustDown(this.cursors.left)
         var UjustDown = Phaser.Input.Keyboard.JustDown(this.cursors.up)
+        var SpacejustDown = Phaser.Input.Keyboard.JustDown(this.cursors.space)
+
         var RisDown = this.cursors.right.isDown
         var LisDown = this.cursors.left.isDown
+        var UisDown = this.cursors.up.isDown
+        var SpaceisDown = this.cursors.space.isDown
+        
         var RisUp = this.cursors.right.isUp
         var LisUp = this.cursors.left.isUp
 
@@ -363,15 +368,24 @@ class Scene2 extends Phaser.Scene{
         // if (LjustUp){
         //     this.hero.play("hero_idle_anim")
         // }
-        
+        // Running then Jumping
+
         // Running then Jumping
         if ((LisDown || RisDown) && UjustDown && this.isGravityEnabled()){
-            this.heroSpeed.y -=  10
+            this.heroSpeed.y -=  10 
             this.hero.play("hero_jump_anim")
             this.hero.once('animationcomplete', ()=> {
                 this.hero.play("hero_run_anim")
             })
         }
+
+        // if (SpacejustDown){
+        //     this.hero.play("hero_attack_air_anim")
+        //     this.hero.once('animationcomplete', ()=> {
+        //         this.hero.play("hero_run_anim")
+        //     })
+        //     return
+        // }
 
         // Standing then Jumping
         if ((LisUp && RisUp) && UjustDown && this.isGravityEnabled()){

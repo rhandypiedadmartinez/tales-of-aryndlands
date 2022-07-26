@@ -30,6 +30,11 @@ class Scene1 extends Phaser.Scene{
             frameHeight: 64
         })
 
+        this.load.spritesheet('hero_attack_air','static/assets/spritesheets/knight/attack_from_air.png',{
+            frameWidth: 128,
+            frameHeight: 64
+        })
+
         this.load.spritesheet('miko','static/assets/spritesheets/miko.png',{
             frameWidth: 561,
             frameHeight: 1105   
@@ -116,6 +121,16 @@ class Scene1 extends Phaser.Scene{
                 end: 19
             }),
             frameRate: 20,
+            repeat: 0
+        })
+
+        this.anims.create({
+            key:"hero_attack_air_anim",
+            frames: this.anims.generateFrameNumbers("hero_attack_air",{
+                start: 1,
+                end: 7
+            }),
+            frameRate: 10,
             repeat: 0
         })
 
