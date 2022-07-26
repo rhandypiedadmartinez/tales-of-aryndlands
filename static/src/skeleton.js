@@ -128,10 +128,10 @@ class Skeleton extends Phaser.GameObjects.Sprite{
 
         var thisX = this.x
         var heroX = scene.hero.x
-        if (thisX + 10 > heroX){  
+        if (thisX + 40 > heroX){  
             this.goAttack = true
         }
-        if (thisX - 10 < heroX){
+        if (thisX - 40 < heroX){
             this.goAttack = true
         }
     }
@@ -208,7 +208,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         }
 
         if (thisX > heroX){
-            if (thisX - 20 < heroX){
+            if (thisX - 40 < heroX){
                 this.goAttack = true
                 return 0
             }
@@ -216,7 +216,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         }
 
         if (thisX < heroX){
-            if (thisX + 20 > heroX){
+            if (thisX + 40 > heroX){
                 this.goAttack = true
                 return 0
             }
