@@ -40,6 +40,12 @@ class Scene1 extends Phaser.Scene{
             frameHeight: 64
         })
 
+
+        this.load.spritesheet('hero_death','static/assets/spritesheets/knight/Death.png',{
+            frameWidth: 128,
+            frameHeight: 64
+        })
+
         this.load.spritesheet('skeleton_idle','static/assets/spritesheets/monsters/Skeleton/Idle.png',{
             frameWidth: 150,
             frameHeight: 150
@@ -173,6 +179,16 @@ class Scene1 extends Phaser.Scene{
             }),
             frameRate: 5,
             repeat: 1
+        })
+
+        this.anims.create({
+            key:"hero_death_anim",
+            frames: this.anims.generateFrameNumbers("hero_death",{
+                start: 0,
+                end: 3
+            }),
+            frameRate: 5,
+            repeat: 0
         })
 
         this.anims.create({

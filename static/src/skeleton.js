@@ -1,6 +1,6 @@
 class Skeleton extends Phaser.GameObjects.Sprite{
     constructor(scene){
-        var x = scene.hero.x + 300
+        var x = scene.hero.x + Math.random() * 300 + 200
         var y = 160
         super(scene,x,y,"skeleton_walk")
 
@@ -21,7 +21,11 @@ class Skeleton extends Phaser.GameObjects.Sprite{
     }
 
     update(scene){
-        if (this.life == 0) {
+        if (scene.heroHealth <= 0){
+            if (this.anims.getName() != 'skeleton_walk_anim'){
+                this.play('skeleton_walk_anim')
+            }
+            this.body.velocity.x = this.scaleX * (40 * Math.random() + 10)
             return
         }
         //
@@ -82,32 +86,37 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         //     }
         //     return false
         // } 
-        if (this.goAttack && (scene.hero.anims.getName() == 'hero_attack_anim') ){ 
+        if (this.goAttack && ((scene.hero.anims.getName() == 'hero_attack_anim'))){ 
             if (this.anims.getProgress()>0.5){
                 if(scene.hero.scaleX != this.scaleX){
                     console.log(this.health)
                     if (this.health > 0){
-                        this.health -= 1
+                        this.health -= 2
                         this.play('skeleton_takehit_anim')
                         this.once('animationcomplete',()=>{
                             this.play('skeleton_attack_anim')
                         })
                         return
                     }
-                    if (this.anims.getName() == 'skeleton_death_anim'){
-                        return
-                    }
-                    if (this.health == 0){
-                        this.play('skeleton_death_anim')
-                        this.once('animationcomplete',()=>{
-                            this.destroy()
-                        })
-                        //this.death()
-                        return
-                    }
+                    this.callDeath(scene)
                 }
             }
          }
+
+         if (this.goAttack && ((scene.hero.anims.getName() == 'hero_attack_air_anim'))){ 
+            if (this.anims.getProgress()>0.7){    
+                console.log(this.health)
+                if (this.health > 0){
+                    this.health -= 5
+                    this.play('skeleton_takehit_anim')
+                    this.once('animationcomplete',()=>{
+                        this.play('skeleton_attack_anim')
+                    })
+                    return
+                }
+                this.callDeath(scene)
+            }
+        }
     
             // if (this.anims.currentFrame.index == 2){
             //     scene.hero.playAfterDelay('hero_hurt_anim',150)
@@ -127,7 +136,25 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         }
     }
 
-    death(){
+    callDeath(scene){
+        if (scene.heroHealth <= 0){
+            this.play('skeleton_death_anim')
+            this.once('animationcomplete',()=>{
+                this.destroy()
+            })
+            return
+        }
+        if (this.anims.getName() == 'skeleton_death_anim'){
+            return
+        }
+        if (this.health <= 0){
+            this.play('skeleton_death_anim')
+            this.once('animationcomplete',()=>{
+                this.destroy()
+            })
+            //this.death()
+            return
+        }
     //     this.once('animationcomplete',()=>{
     //         this.play('skeleton_death_anim')
     //         try{

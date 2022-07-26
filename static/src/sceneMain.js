@@ -75,7 +75,9 @@ class Scene2 extends Phaser.Scene{
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
 //      this.projectiles = this.add.group()
         this.enemies = this.physics.add.group()
-
+        var skeleton = new Skeleton(this)
+        var skeleton = new Skeleton(this)
+        var skeleton = new Skeleton(this)
         this.keyObj = this.input.keyboard.addKey('W');  // Get key object
         
         //this.add.image(100,100,'ysnail')
@@ -249,13 +251,25 @@ class Scene2 extends Phaser.Scene{
 
     update(){
         var scoreFormatted = this.zeroPad(this.heroHealth, 2)
-
         this.scorelabel.text = "HEALTH: " + scoreFormatted
 
         for(var i = 0; i < this.enemies.getChildren().length; i++){
             var enemy = this.enemies.getChildren()[i];
             enemy.update(this);
         }
+
+        if (this.heroHealth <= 0 && this.isGravityEnabled()){
+            if (this.hero.anims.getName() != 'hero_death_anim'){
+                this.hero.playAfterDelay('hero_death_anim',500)
+            }
+            if (this.hero.anims.currentFrame.index == 4){
+                this.hero.anims.pause()
+            }
+            return
+        }
+
+     
+
         var wDown = this.input.keyboard.checkDown(this.keyObj, 10);
 
         this.RjustUp = Phaser.Input.Keyboard.JustUp(this.cursors.right) 
