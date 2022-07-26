@@ -38,13 +38,14 @@ class Scene2 extends Phaser.Scene{
         this.bg_2.setOrigin(0, 0);
         this.bg_2.setScrollFactor(0);
 
+        this.miko = this.physics.add.sprite(config.width/2 - 30, 130, "miko")
+        this.miko.setScale(0.15)
+        this.miko.play("miko_anim")
+
         this.bg_3 = this.add.tileSprite(0, 0, game.config.width, game.config.height, "bg_3");
         this.bg_3.setOrigin(0, 0);
         this.bg_3.setScrollFactor(0);
 
-        this.miko = this.physics.add.sprite(config.width/2 - 8, 100, "miko")
-        this.miko.setScale(0.15)
-        this.miko.play("miko_anim")
 
         this.hero = this.physics.add.sprite(config.width/2 - 8, 150, "hero_idle")
         this.hero.play("hero_idle_anim")
@@ -256,41 +257,6 @@ class Scene2 extends Phaser.Scene{
         this.ground.tilePositionX = this.myCam.scrollX
     }
 
-    moveHeroManager(){
-        var RisDown = this.cursors.right.isDown
-        var LisDown = this.cursors.left.isDown
-        var RisUp = this.cursors.right.isUp
-        var LisUp = this.cursors.left.isUp
-        var RjustUp = Phaser.Input.Keyboard.JustUp(this.cursors.right) 
-        var LjustUp = Phaser.Input.Keyboard.JustUp(this.cursors.left)
-        
-        if (RisDown && LisDown && this.isGravityEnabled()){
-            this.LRlocked = true
-        }
-
-        if (RjustUp || LjustUp){
-            this.LRlocked = false
-        }
-
-        if (this.LRlocked){
-            this.hero.play('hero_idle_anim')
-            return
-        }
-
-        if (RisDown && LisUp && this.hero.x < game.config.width * 3) {
-            this.heroSpeed.x = 3;
-        }
-
-        if (LisDown && RisUp && this.hero.x > 0) {
-            this.heroSpeed.x = -3;
-        } 
-
-        this.HeroSpriteChange()
-        
-        this.gravitate()
-
-    }
-
     gravitate(){
         this.hero.y += this.heroSpeed.y
         
@@ -306,8 +272,45 @@ class Scene2 extends Phaser.Scene{
             return
         } else {
             this.hero.x += this.heroSpeed.x
-            this.heroSpeed.x = this.heroSpeed.x * 0.8
+            this.heroSpeed.x = this.heroSpeed.x * 0.7
         }
+
+    }
+
+    moveHeroManager(){
+        var RisDown = this.cursors.right.isDown
+        var LisDown = this.cursors.left.isDown
+        var RisUp = this.cursors.right.isUp
+        var LisUp = this.cursors.left.isUp
+        var RjustUp = Phaser.Input.Keyboard.JustUp(this.cursors.right) 
+        var LjustUp = Phaser.Input.Keyboard.JustUp(this.cursors.left)
+        
+        if (RisDown && LisDown && this.isGravityEnabled()){
+            this.LRlocked = true
+        }
+
+        // if (RjustUp || LjustUp){
+        //     this.LRlocked = false
+        // }
+
+        // if (this.LRlocked){
+        //     this.hero.play('hero_idle_anim')
+        //     return
+        // }
+
+    
+        if (RisDown && LisUp && this.hero.x < game.config.width * 3) {
+            this.heroSpeed.x += 1;
+        }
+
+        if (LisDown && RisUp && this.hero.x > 0) {
+            this.heroSpeed.x -= 1;
+        } 
+        //console.log(this.heroSpeed.x)
+
+        this.HeroSpriteChange()
+        
+        this.gravitate()
 
     }
 
@@ -322,25 +325,37 @@ class Scene2 extends Phaser.Scene{
         var RisUp = this.cursors.right.isUp
         var LisUp = this.cursors.left.isUp
 
-        //var SpacejustDown = 
-
-
         // Running Right
         if (RjustDown){
             this.hero.play("hero_run_anim")
-            this.hero.scaleX = 1;
+            this.hero.scaleX = -1;
+            return
         }
 
         // Running Left
         if (LjustDown){
             this.hero.play("hero_run_anim")
-            this.hero.scaleX = -1;
+            this.hero.scaleX = 1;
+            return
         }
-
+        
+        // To check if speed.x decreased to 1 to 0
         if (this.checkNotMovingX()){
             this.hero.play("hero_idle_anim")
+            return
         }
 
+        // to check if L or R is released from pressing both LR
+        if (this.checkNotMovingX() == false){
+            this.hero.play("hero_run_anim")
+            if (LisDown){
+                this.hero.scaleX =  -1;
+            }
+            if (RisDown){
+                this.hero.scaleX =  1;
+            }
+        }
+        
         // // Stop Running Right
         // if (RjustUp){   
         //     this.hero.play("hero_idle_anim")
@@ -374,7 +389,9 @@ class Scene2 extends Phaser.Scene{
         if (Math.floor(Math.abs(this.heroSpeed.x)) == 1){
             return true
         }
-        return false
+        if (Math.floor(Math.abs(this.heroSpeed.x)) == 2){
+            return false
+        }
     }
 
     isGravityEnabled(){
