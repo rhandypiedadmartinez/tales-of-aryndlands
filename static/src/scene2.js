@@ -64,7 +64,7 @@ class Scene2 extends Phaser.Scene{
         this.ground.y = 12 * 14
 
         this.hero.setDepth(2)
-        this.miko.setDepth(2)
+        this.miko.setDepth(1)
         this.ground.setDepth(3)
 
         // this.player =  this.physics.add.sprite(config.width/2 -8,config.height-64,"player")

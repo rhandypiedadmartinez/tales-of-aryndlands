@@ -6,7 +6,7 @@ Most of the commented codes are from a tutorial series: https://youtu.be/frRWKxB
 To run this program in Linux:
 Open terminal,
 type 'pip install -r requirements.txt'
-type 'python3 run.py'
+type 'python3 app.py'
 open browser, type in address bar 'localhost:5000'
 then zoom upto ~200%
 
