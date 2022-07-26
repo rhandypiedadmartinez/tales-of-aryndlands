@@ -75,10 +75,6 @@ class Scene2 extends Phaser.Scene{
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
 //      this.projectiles = this.add.group()
         this.enemies = this.physics.add.group()
-        for(var i = 0; i < this.enemies.getChildren().length; i++){
-            var enemy = this.enemies.getChildren()[i];
-            enemy.update();
-        }
 
         this.keyObj = this.input.keyboard.addKey('W');  // Get key object
         
@@ -140,7 +136,15 @@ class Scene2 extends Phaser.Scene{
         //     projectile.destroy()
         // })
         
+
+        // this.physics.add.collider(this.projectiles, this.powerUps, function(projectile,powerUp){
+        //     projectile.destroy()
+        // })
+
         // this.physics.add.overlap(this.player, this.powerUps, this.pickPowerUp, null, this)
+
+
+        this.physics.add.overlap(this.hero, this.enemies, this.enemyattack, null, this)
 
         // this.enemies = this.physics.add.group()
         // this.enemies.add(this.obj1)
@@ -165,6 +169,9 @@ class Scene2 extends Phaser.Scene{
         // this.scorelabel = this.add.bitmapText(10,5,"pixelFont","SCORE",16)
 
 
+    }
+
+    enemyattack(hero, enemy){
     }
 
     hitEnemy(projectile, enemy){
@@ -243,6 +250,10 @@ class Scene2 extends Phaser.Scene{
     }
 
     update(){
+        for(var i = 0; i < this.enemies.getChildren().length; i++){
+            var enemy = this.enemies.getChildren()[i];
+            enemy.update(this);
+        }
         var wDown = this.input.keyboard.checkDown(this.keyObj, 10);
 
         this.RjustUp = Phaser.Input.Keyboard.JustUp(this.cursors.right) 
@@ -326,7 +337,7 @@ class Scene2 extends Phaser.Scene{
                 return
             }
         }
-        
+
         if (this.SpacejustDown){
             this.hero.play("hero_attack_anim")
         }

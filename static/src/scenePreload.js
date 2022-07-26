@@ -50,6 +50,11 @@ class Scene1 extends Phaser.Scene{
             frameHeight: 150
         })
 
+        this.load.spritesheet('skeleton_takehit','static/assets/spritesheets/monsters/Skeleton/Take Hit.png',{
+            frameWidth: 150,
+            frameHeight: 150
+        })
+
         this.load.spritesheet('miko','static/assets/spritesheets/miko.png',{
             frameWidth: 561,
             frameHeight: 1105   
@@ -172,6 +177,16 @@ class Scene1 extends Phaser.Scene{
         this.anims.create({
             key:"skeleton_attack_anim",
             frames: this.anims.generateFrameNumbers("skeleton_attack",{
+                start: 0,
+                end: 3
+            }),
+            frameRate: 5,
+            repeat: -1
+        })
+
+        this.anims.create({
+            key:"skeleton_takehit_anim",
+            frames: this.anims.generateFrameNumbers("skeleton_takehit",{
                 start: 0,
                 end: 3
             }),
