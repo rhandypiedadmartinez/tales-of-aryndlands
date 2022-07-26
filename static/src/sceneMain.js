@@ -144,7 +144,7 @@ class Scene2 extends Phaser.Scene{
         // this.physics.add.overlap(this.player, this.powerUps, this.pickPowerUp, null, this)
 
 
-        this.physics.add.overlap(this.hero, this.enemies, this.enemyattack, null, this)
+        this.physics.add.overlap(this.hero, this.enemies, this.enemyAttack, null, this)
 
         // this.enemies = this.physics.add.group()
         // this.enemies.add(this.obj1)
@@ -171,7 +171,8 @@ class Scene2 extends Phaser.Scene{
 
     }
 
-    enemyattack(hero, enemy){
+    enemyAttack(hero, enemy){
+        enemy.attackAnim()
     }
 
     hitEnemy(projectile, enemy){
