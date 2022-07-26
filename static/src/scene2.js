@@ -328,14 +328,12 @@ class Scene2 extends Phaser.Scene{
         // Running Right
         if (RjustDown){
             this.hero.play("hero_run_anim")
-            this.hero.scaleX = -1;
             return
         }
 
         // Running Left
         if (LjustDown){
             this.hero.play("hero_run_anim")
-            this.hero.scaleX = 1;
             return
         }
         
@@ -379,6 +377,13 @@ class Scene2 extends Phaser.Scene{
         if ((LisUp && RisUp) && UjustDown && this.isGravityEnabled()){
             this.heroSpeed.y -=  10
             this.hero.play("hero_jump_anim")
+            this.hero.once('animationcomplete', ()=> {
+                this.hero.play("hero_idle_anim")
+            })
+        }
+        
+        if (Phaser.Input.Keyboard.JustDown(this.spacebar) && this.heroSpeed.x == 0){
+            this.hero.play('hero_attack_anim')
             this.hero.once('animationcomplete', ()=> {
                 this.hero.play("hero_idle_anim")
             })
