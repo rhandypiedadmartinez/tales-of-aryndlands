@@ -35,8 +35,8 @@ class Scene1 extends Phaser.Scene{
             frameHeight: 64
         })
 
-        this.load.spritesheet('skeleton','static/assets/spritesheets/monsters/Skeleton/Attack3.png',{
-            frameWidth: 900/6,
+        this.load.spritesheet('skeleton_idle','static/assets/spritesheets/monsters/Skeleton/Idle.png',{
+            frameWidth: 150,
             frameHeight: 150
         })
 
@@ -100,7 +100,7 @@ class Scene1 extends Phaser.Scene{
         this.anims.create({
             key:"hero_idle_anim",
             frames: this.anims.generateFrameNumbers("hero_idle"),
-            frameRate: 20,
+            frameRate: 10,
             repeat: -1
         })
 
@@ -139,12 +139,12 @@ class Scene1 extends Phaser.Scene{
         })
 
         this.anims.create({
-            key:"skeleton_anim",
-            frames: this.anims.generateFrameNumbers("skeleton",{
-                start: 1,
-                end: 6
+            key:"skeleton_idle_anim",
+            frames: this.anims.generateFrameNumbers("skeleton_idle",{
+                start: 0,
+                end: 3
             }),
-            frameRate: 20,
+            frameRate: 5,
             repeat: -1
         })
 

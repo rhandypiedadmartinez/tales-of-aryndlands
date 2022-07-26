@@ -49,6 +49,9 @@ class Scene2 extends Phaser.Scene{
 
         this.hero = this.physics.add.sprite(config.width/2 - 8, 150, "hero_idle")
         this.hero.play("hero_idle_anim")
+        
+        //this.sk = this.physics.add.sprite(config.width/2 - 8, 160, "skeleton_idle")
+        //this.sk.play("skeleton_idle_anim")
 
         this.myCam = this.cameras.main;
         this.myCam.setBounds(0, 0, game.config.width * 3, game.config.height);
@@ -60,9 +63,9 @@ class Scene2 extends Phaser.Scene{
         this.ground.setScrollFactor(0);
         this.ground.y = 12 * 14
 
-
-        //this.sk = this.physics.add.sprite(config.width/2 - 8, 120, "skeleton")
-        //this.sk.play("skeleton_anim")
+        this.hero.setDepth(2)
+        this.miko.setDepth(2)
+        this.ground.setDepth(3)
 
         // this.player =  this.physics.add.sprite(config.width/2 -8,config.height-64,"player")
         // this.player.play("thrust")
@@ -400,7 +403,10 @@ class Scene2 extends Phaser.Scene{
                 this.hero.play("hero_idle_anim")
             })
         }
-        
+        if (SpacejustDown){
+            console.log('RRR')
+            this.spawnSkeleton()
+        }
         if (Phaser.Input.Keyboard.JustDown(this.spacebar) && this.heroSpeed.x == 0){
             this.hero.play('hero_attack_anim')
             this.hero.once('animationcomplete', ()=> {
@@ -428,6 +434,10 @@ class Scene2 extends Phaser.Scene{
     shootBeam(){
         var beam = new Beam(this)
         this.beamSound.play()
+    }
+
+    spawnSkeleton(){
+        var skeleton = new Skeleton(this)
     }
 
     destroyObj(pointer, gameObject){
