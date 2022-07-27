@@ -1,12 +1,24 @@
 class Skeleton extends Phaser.GameObjects.Sprite{
     constructor(scene){
-        var x = scene.hero.x + Math.random() * 300 + 200
+        var x = scene.hero.x + leftOrRight() * Phaser.Math.Between(300,400)
+
+        function leftOrRight(){
+            if (Phaser.Math.Between(0,1)==0){
+                return -1
+            }
+            return 1
+        } 
+
         var y = 160
         super(scene,x,y,"skeleton_walk")
-
         scene.add.existing(this);
+        
+        this.greenhealthIndicator = scene.add.rectangle(this.x,this.y-50, 15, 3, 0x00FF00);
+        this.redhealthIndicator = scene.add.rectangle(this.x,this.y-50, 15, 3, 0xFF0000);
+        this.redhealthIndicator.setDepth(1)
+        this.greenhealthIndicator.setDepth(2)
 
-        this.health = 5
+        this.health = 15
         this.play("skeleton_walk_anim");
         this.goAttack = false
 
@@ -21,7 +33,12 @@ class Skeleton extends Phaser.GameObjects.Sprite{
     }
 
     update(scene){
+        this.updateHealthIndicator(scene)
         this.manageSound(scene)
+
+        if (this.health<= 0){
+            this.callDeath(scene)
+        }
 
         if (scene.heroHealth <= 0){
             if (this.anims.getName() != 'skeleton_walk_anim'){
@@ -49,6 +66,15 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         // }        
 
         this.isAttackHitHero(scene)
+    }
+
+    updateHealthIndicator(scene){
+        this.redhealthIndicator.x = this.x
+        if (this.health >= 0){
+            this.greenhealthIndicator.x = this.x
+            this.greenhealthIndicator.width = this.health          
+            return  
+        }
     }
 
     manageSound(scene){
@@ -89,6 +115,13 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         }
     }
 
+    TakeHitOrBlock(){
+        if (Phaser.Math.Between(0,1)==0){
+            return true
+        }
+        return false
+    }
+
     isAttackHitHero(scene){
         // skeleton hurt hero
         if (this.anims.getName() == 'skeleton_attack_anim'){
@@ -115,12 +148,18 @@ class Skeleton extends Phaser.GameObjects.Sprite{
                 if(scene.hero.scaleX != this.scaleX){
                     console.log(this.health)
                     if (this.health > 0){
-                        this.health -= 2
-                        this.play('skeleton_takehit_anim')
+                        if (this.TakeHitOrBlock){
+                            this.health -= 3
+                            this.play('skeleton_takehit_anim')
+                            this.once('animationcomplete',()=>{
+                                this.play('skeleton_attack_anim')
+                                return
+                            })    
+                        }
+                        this.play('skeleton_block_anim')
                         this.once('animationcomplete',()=>{
                             this.play('skeleton_attack_anim')
                         })
-                        return
                     }
                     this.callDeath(scene)
                 }
@@ -131,12 +170,18 @@ class Skeleton extends Phaser.GameObjects.Sprite{
             if (this.anims.getProgress()>0.7){    
                 console.log(this.health)
                 if (this.health > 0){
-                    this.health -= 5
-                    this.play('skeleton_takehit_anim')
+                    if (this.TakeHitOrBlock){
+                        this.health -= 5
+                        this.play('skeleton_takehit_anim')
+                        this.once('animationcomplete',()=>{
+                            this.play('skeleton_attack_anim')
+                            return
+                        })    
+                    }
+                    this.play('skeleton_block_anim')
                     this.once('animationcomplete',()=>{
                         this.play('skeleton_attack_anim')
                     })
-                    return
                 }
                 this.callDeath(scene)
             }
@@ -165,6 +210,9 @@ class Skeleton extends Phaser.GameObjects.Sprite{
             this.play('skeleton_death_anim')
             this.once('animationcomplete',()=>{
                 this.destroy()
+                this.greenhealthIndicator.destroy()
+                this.redhealthIndicator.destroy()
+                
             })
             return
         }
@@ -174,6 +222,9 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         if (this.health <= 0){
             this.play('skeleton_death_anim')
             this.once('animationcomplete',()=>{
+                this.greenhealthIndicator.destroy()
+                this.redhealthIndicator.destroy()
+                
                 this.destroy()
             })
             //this.death()

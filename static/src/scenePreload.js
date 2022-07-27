@@ -73,6 +73,11 @@ class Scene1 extends Phaser.Scene{
             frameHeight: 150
         })
 
+        this.load.spritesheet('skeleton_block','static/assets/spritesheets/monsters/Skeleton/Shield.png',{
+            frameWidth: 150,
+            frameHeight: 150
+        })
+
 
 
         this.load.spritesheet('miko','static/assets/spritesheets/miko.png',{
@@ -249,6 +254,18 @@ class Scene1 extends Phaser.Scene{
             frameRate: 5,
             repeat: 0
         })
+
+
+        this.anims.create({
+            key:"skeleton_block_anim",
+            frames: this.anims.generateFrameNumbers("skeleton_block",{
+                start: 0,
+                end: 3
+            }),
+            frameRate: 5,
+            repeat: 0
+        })
+
         this.anims.create({
             key:"miko_anim",
             frames: this.anims.generateFrameNumbers("miko"),
