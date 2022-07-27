@@ -64,11 +64,12 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         // if (scene.hitswoosh.isPlaying){
         //     scene.hitswoosh.stop()
         // }
-
-        if (this.anims.getName() == 'skeleton_attack_anim'){
+        if (this.anims.getName() == 'skeleton_attack_anim'){       
             if (!scene.hitswoosh2.isPlaying){
+                if (this.anims.getProgress()==1){
                 scene.hitswoosh2.play()
-            }
+                }
+            }   
         }
     }
 

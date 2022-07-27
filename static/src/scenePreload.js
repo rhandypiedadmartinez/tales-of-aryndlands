@@ -5,6 +5,8 @@ class Scene1 extends Phaser.Scene{
     }
 
     preload(){
+        this.load.plugin('rexsliderplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexsliderplugin.min.js', true);
+
         this.load.image("bg_1", "static/assets/background/background/background_layer_1.png");
         this.load.image("bg_2", "static/assets/background/background/background_layer_2.png");
         this.load.image("bg_3", "static/assets/background/background/background_layer_3.png");

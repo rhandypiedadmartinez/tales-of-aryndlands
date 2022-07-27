@@ -86,6 +86,8 @@ class Scene2 extends Phaser.Scene{
         var skeleton = new Skeleton(this)
         this.keyObj = this.input.keyboard.addKey('W');  // Get key object
         
+ 
+
         //this.add.image(100,100,'ysnail')
         // this.snail1 = this.add.image(config.width/2-100, config.height/2, 'snail')
         // this.snail2 = this.add.image(config.width/2, config.height/2, 'snail')
@@ -154,6 +156,31 @@ class Scene2 extends Phaser.Scene{
 
         this.physics.add.overlap(this.hero, this.enemies, this.enemyAttack, null, this)
 
+        //slider FINALLLLLYYY
+        this.img = this.add.circle(500, 20, 5, 0xFF7873);
+        this.img.slider = this.plugins.get('rexsliderplugin').add(this.img, {
+            endPoints: [{
+                x: this.img.x - 0,
+                y: this.img.y - 10
+            },
+            {
+                x: this.img.x + 0,
+                y: this.img.y + 10
+            }
+            ],
+            value: 0.1
+        });
+        this.img.setDepth(4)
+        this.imgline = this.add.rectangle(this.myCam.scrollX + config.width * 0.90,this.img.y+7.5, 4    , 30, 0xFFFFFF);
+        
+         //this.lineSlider = this.add.graphics()
+         //.lineStyle(3, 0x55ff55, 1)
+        // .strokePoints(this.img.slider.endPoints);
+
+        this.text = this.add.text(0, 5, '', {
+            fontSize: '12px'
+        });
+
         // this.enemies = this.physics.add.group()
         // this.enemies.add(this.obj1)
         // this.enemies.add(this.obj2)
@@ -163,12 +190,24 @@ class Scene2 extends Phaser.Scene{
         // this.physics.add.overlap(this.projectiles, this.enemies, this.hitEnemy, null, this)
     
 
-         var graphics = this.add.graphics();
-         graphics.fillStyle(0x000000, 0.5);
-        //  32px radius on the corners
-        //var graphics = game.add.graphics(300, 200).setInteractive()
+        // this.pointer = this.input.activePointer;
+        // var shape = new Phaser.Geom.Circle(48,48,48);
 
-        graphics.fillRoundedRect(config.width * 0.75 + this.myCam.scrollX, 6, 50, 10, 2);
+        // const helloButton = this.add.text(config.width * 0.75 + this.myCam.scrollX, 6, '||||||', { fill: {color: 0x000000, alpha:0.5} });
+        // graphics.setInteractive()
+        // helloButton.on('pointerover',()=>{
+        //     console.log('pointerover')
+        // })
+
+        // var puerta1 = new Phaser.Geom.Rectangle(300, 100, 230, 430)
+        // var graphics1 = this.add.graphics({ fillStyle: { color: 0xff0000 } });
+        // graphics1.fillRectShape(puerta1)
+        // puerta1.setInteractive(puerta1,()=>{})
+        // puerta1.on('pointerover',()=>{
+        //     console.log('rrrr')
+        // })
+        
+
         //graphics.events.onInputDown.add(onDown, this);
         // graphics.events.onInputUp.add(onUp, this);
         // graphics.events.onInputOver.add(onOver, this);
@@ -189,6 +228,86 @@ class Scene2 extends Phaser.Scene{
 
 
     }
+
+    update(){
+        this.text.setText(Math.floor((1 - this.img.slider.value)*100) + '%');
+        // if (this.pointer.isDown) {
+        //     var touchX = this.pointer.x;
+        //     var touchY = this.pointer.y;
+        //     console.log(touchX + touchY)
+        // }
+        this.manageSound()
+
+        var scoreFormatted = this.zeroPad(this.heroHealth, 2)
+        this.scorelabel.text = "HEALTH: " + scoreFormatted
+
+        for(var i = 0; i < this.enemies.getChildren().length; i++){
+            var enemy = this.enemies.getChildren()[i];
+            enemy.update(this);
+        }
+
+        if (this.heroHealth <= 0 && this.isGravityEnabled()){
+            if (this.hero.anims.getName() != 'hero_death_anim'){
+                this.hero.playAfterDelay('hero_death_anim',500)
+            }
+            if (this.hero.anims.currentFrame.index == 4){
+                this.hero.anims.pause()
+            }
+            return
+        }
+
+     
+
+        var wDown = this.input.keyboard.checkDown(this.keyObj, 10);
+
+        this.RjustUp = Phaser.Input.Keyboard.JustUp(this.cursors.right) 
+        this.LjustUp = Phaser.Input.Keyboard.JustUp(this.cursors.left)
+        
+        this.RjustDown = Phaser.Input.Keyboard.JustDown(this.cursors.right)
+        this.LjustDown = Phaser.Input.Keyboard.JustDown(this.cursors.left)
+        this.UjustDown = Phaser.Input.Keyboard.JustDown(this.cursors.up)
+        
+        this.RisDown = this.cursors.right.isDown
+        this.LisDown = this.cursors.left.isDown
+        this.UisDown = this.cursors.up.isDown
+        this.SpaceisDown = this.cursors.space.isDown
+        
+        this.RisUp = this.cursors.right.isUp
+        this.LisUp = this.cursors.left.isUp
+
+        this.SpacejustDown = Phaser.Input.Keyboard.JustDown(this.cursors.space)
+        this.SpaceLimit = this.input.keyboard.checkDown(this.cursors.space, 1000);
+
+        this.moveHeroManager()
+        //this.obj1.angle += 1
+        //this.obj2.angle -= 1
+        //this.obj3.angle += 2
+        
+        // this.move(this.obj1, 1)
+        // this.move(this.obj2, 1)
+        // this.move(this.obj3, 1)
+
+        //this.background.tilePositionY -= 0.5
+
+        // // this.movePlayerManager()
+
+        // if (Phaser.Input.Keyboard.JustDown(this.spacebar)){
+        //     this.hero.play('hero_idle_anim')
+        //     if (this.player.active){
+        //         this.shootBeam()
+        //    }
+        // }
+        this.bg_1.tilePositionX = this.myCam.scrollX * .3
+        this.bg_2.tilePositionX = this.myCam.scrollX * .6
+        this.bg_3.tilePositionX = this.myCam.scrollX
+        this.img.x = this.myCam.scrollX + config.width * 0.95
+        this.imgline.x = this.img.x
+        this.text.x = this.img.x - 35
+        this.miko.tilePositionX = this.myCam.scrollX
+        this.ground.tilePositionX = this.myCam.scrollX
+        this.scorelabel.x = this.myCam.scrollX + config.width * 0.40 
+    }
+
 
     // drawShape(fill, style) {
 
@@ -298,77 +417,6 @@ class Scene2 extends Phaser.Scene{
         obj.y = 0
         var randomX = Phaser.Math.Between(0, config.width)
         obj.x = randomX
-    }
-
-    update(){
-
-        this.manageSound()
-
-        var scoreFormatted = this.zeroPad(this.heroHealth, 2)
-        this.scorelabel.text = "HEALTH: " + scoreFormatted
-
-        for(var i = 0; i < this.enemies.getChildren().length; i++){
-            var enemy = this.enemies.getChildren()[i];
-            enemy.update(this);
-        }
-
-        if (this.heroHealth <= 0 && this.isGravityEnabled()){
-            if (this.hero.anims.getName() != 'hero_death_anim'){
-                this.hero.playAfterDelay('hero_death_anim',500)
-            }
-            if (this.hero.anims.currentFrame.index == 4){
-                this.hero.anims.pause()
-            }
-            return
-        }
-
-     
-
-        var wDown = this.input.keyboard.checkDown(this.keyObj, 10);
-
-        this.RjustUp = Phaser.Input.Keyboard.JustUp(this.cursors.right) 
-        this.LjustUp = Phaser.Input.Keyboard.JustUp(this.cursors.left)
-        
-        this.RjustDown = Phaser.Input.Keyboard.JustDown(this.cursors.right)
-        this.LjustDown = Phaser.Input.Keyboard.JustDown(this.cursors.left)
-        this.UjustDown = Phaser.Input.Keyboard.JustDown(this.cursors.up)
-        
-        this.RisDown = this.cursors.right.isDown
-        this.LisDown = this.cursors.left.isDown
-        this.UisDown = this.cursors.up.isDown
-        this.SpaceisDown = this.cursors.space.isDown
-        
-        this.RisUp = this.cursors.right.isUp
-        this.LisUp = this.cursors.left.isUp
-
-        this.SpacejustDown = Phaser.Input.Keyboard.JustDown(this.cursors.space)
-        this.SpaceLimit = this.input.keyboard.checkDown(this.cursors.space, 1000);
-
-        this.moveHeroManager()
-        //this.obj1.angle += 1
-        //this.obj2.angle -= 1
-        //this.obj3.angle += 2
-        
-        // this.move(this.obj1, 1)
-        // this.move(this.obj2, 1)
-        // this.move(this.obj3, 1)
-
-        //this.background.tilePositionY -= 0.5
-
-        // // this.movePlayerManager()
-
-        // if (Phaser.Input.Keyboard.JustDown(this.spacebar)){
-        //     this.hero.play('hero_idle_anim')
-        //     if (this.player.active){
-        //         this.shootBeam()
-        //    }
-        // }
-        this.bg_1.tilePositionX = this.myCam.scrollX * .3
-        this.bg_2.tilePositionX = this.myCam.scrollX * .6
-        this.bg_3.tilePositionX = this.myCam.scrollX
-        this.miko.tilePositionX = this.myCam.scrollX
-        this.ground.tilePositionX = this.myCam.scrollX
-        this.scorelabel.x = this.myCam.scrollX + config.width * 0.40 
     }
 
     manageSound(){
