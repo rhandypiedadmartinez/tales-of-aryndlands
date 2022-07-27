@@ -84,6 +84,11 @@ class Scene2 extends Phaser.Scene{
         var skeleton = new Skeleton(this)
         var skeleton = new Skeleton(this)
         var skeleton = new Skeleton(this)
+        var skeleton = new Skeleton(this)
+        var skeleton = new Skeleton(this)
+        var skeleton = new Skeleton(this)
+        var skeleton = new Skeleton(this)
+
         this.keyObj = this.input.keyboard.addKey('W');  // Get key object
         
  
@@ -177,9 +182,7 @@ class Scene2 extends Phaser.Scene{
          //.lineStyle(3, 0x55ff55, 1)
         // .strokePoints(this.img.slider.endPoints);
 
-        this.text = this.add.text(0, 5, '', {
-            fontSize: '12px'
-        });
+        this.text = this.add.bitmapText(0,5,"pixelFont","HEALTH: ",16  )
 
         // this.enemies = this.physics.add.group()
         // this.enemies.add(this.obj1)
@@ -230,7 +233,7 @@ class Scene2 extends Phaser.Scene{
     }
 
     update(){
-        this.text.setText(Math.floor((1 - this.img.slider.value)*100) + '%');
+        this.text.setText('Volume: ' + Math.floor((1 - this.img.slider.value)*100) + '%');
         // if (this.pointer.isDown) {
         //     var touchX = this.pointer.x;
         //     var touchY = this.pointer.y;
@@ -302,7 +305,7 @@ class Scene2 extends Phaser.Scene{
         this.bg_3.tilePositionX = this.myCam.scrollX
         this.img.x = this.myCam.scrollX + config.width * 0.95
         this.imgline.x = this.img.x
-        this.text.x = this.img.x - 35
+        this.text.x = this.img.x - 80
         this.miko.tilePositionX = this.myCam.scrollX
         this.ground.tilePositionX = this.myCam.scrollX
         this.scorelabel.x = this.myCam.scrollX + config.width * 0.40 
@@ -420,7 +423,11 @@ class Scene2 extends Phaser.Scene{
     }
 
     manageSound(){
-        if (this.hero.anims.getName() == 'hero_attack_anim'){
+        this.music.setVolume(1-this.img.slider.value)
+        this.hitswoosh.setVolume(1-this.img.slider.value)
+        this.hitswoosh2.setVolume(1-this.img.slider.value)
+
+        if (this.hero.anims.getName() == 'hero_attack_air_anim' || this.hero.anims.getName() == 'hero_attack_anim'){
             if (!this.hitswoosh.isPlaying){
                 this.hitswoosh.play()
             }
@@ -459,6 +466,7 @@ class Scene2 extends Phaser.Scene{
         if (this.SpacejustDown){
 //            this.swordcut.play()
     //        this.swordlash.play()
+            this.spawnSkeleton()
             this.spawnSkeleton()
         }
 
