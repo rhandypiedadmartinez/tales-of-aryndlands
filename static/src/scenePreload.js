@@ -12,6 +12,19 @@ class Scene1 extends Phaser.Scene{
         this.load.image("bg_3", "static/assets/background/background/background_layer_3.png");
         this.load.image("soil", "static/assets/background/background/ground.png");
         
+        this.load.image("fence1", "static/assets/background/decorations/fence_1.png");
+        this.load.image("fence2", "static/assets/background/decorations/fence_2.png");
+        this.load.image("grass1", "static/assets/background/decorations/grass_1.png");
+        this.load.image("grass2", "static/assets/background/decorations/grass_2.png");
+        this.load.image("lamp", "static/assets/background/decorations/lamp.png");
+        this.load.image("rock1", "static/assets/background/decorations/rock_1.png");
+        this.load.image("rock2", "static/assets/background/decorations/rock_2.png");
+        this.load.image("rock3", "static/assets/background/decorations/rock_3.png");
+        this.load.spritesheet('shop','static/assets/background/decorations/shop_anim.png',{
+            frameWidth: 118,
+            frameHeight: 128
+        })
+        
         this.load.spritesheet('hero_idle','static/assets/spritesheets/knight/Idle.png',{
             frameWidth: 128,
             frameHeight: 64
@@ -144,6 +157,13 @@ class Scene1 extends Phaser.Scene{
         this.scene.start("playGame");
 
         this.anims.create({
+            key:"shop_anim",
+            frames: this.anims.generateFrameNumbers("shop"),
+            frameRate: 10,
+            repeat: -1
+        })
+
+        this.anims.create({
             key:"hero_idle_anim",
             frames: this.anims.generateFrameNumbers("hero_idle"),
             frameRate: 10,
@@ -153,7 +173,7 @@ class Scene1 extends Phaser.Scene{
         this.anims.create({
             key:"hero_run_anim",
             frames: this.anims.generateFrameNumbers("hero_run"),
-            frameRate: 20,
+            frameRate: 10,
             repeat: -1
         })
 

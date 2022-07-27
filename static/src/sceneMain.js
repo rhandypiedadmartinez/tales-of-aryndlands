@@ -7,6 +7,7 @@ class Scene2 extends Phaser.Scene{
     }
 
     create(){
+
         this.heroHealth = 100
         this.heroSpeed = new Phaser.Math.Vector2(0,0)
 
@@ -47,6 +48,14 @@ class Scene2 extends Phaser.Scene{
         this.miko = this.physics.add.sprite(config.width/2 - 30, 130, "miko")
         this.miko.setScale(0.15)
         this.miko.play("miko_anim")
+
+        //next time gawan to ng class pati other background decorations
+        this.shop = this.physics.add.sprite(Phaser.Math.Between(100,config.width/2*2), 130, "shop")
+        this.shop.play("shop_anim")
+        this.shop.setDepth(2)
+        this.shop1 = this.physics.add.sprite(Phaser.Math.Between(config.width/2*3,config.width*4), 130, "shop")
+        this.shop1.play("shop_anim")
+        this.shop1.setDepth(2)
 
         this.bg_3 = this.add.tileSprite(0, 0, game.config.width, game.config.height, "bg_3");
         this.bg_3.setOrigin(0, 0);
