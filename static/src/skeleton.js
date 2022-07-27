@@ -149,7 +149,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
                     console.log(this.health)
                     if (this.health > 0){
                         if (this.TakeHitOrBlock){
-                            this.health -= 1
+                            this.health -= 5
                             this.play('skeleton_takehit_anim')
                             this.once('animationcomplete',()=>{
                                 this.play('skeleton_attack_anim')
@@ -172,7 +172,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
                 console.log(this.health)
                 if (this.health > 0){
                     if (this.TakeHitOrBlock){
-                        this.health -= 5
+                        this.health -= 10
                         this.play('skeleton_takehit_anim')
                         this.once('animationcomplete',()=>{
                             this.play('skeleton_attack_anim')
