@@ -6,10 +6,10 @@ var config = {
     type: Phaser.AUTO,
     parent: 'parentMain',
     scale: {
-        zoom: 1.9,
+        zoom: 2,
         autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
     },
-    width: 500, //1080, //252,
+    width: 540, //1080, //252,
     height: 200,//1920, //272,
     backgroundColor: 0x2F4F4F,
     scene: [Scene1, Scene2],

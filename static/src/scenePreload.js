@@ -124,7 +124,13 @@ class Scene1 extends Phaser.Scene{
         this.load.audio("audio_explosion", ["static/assets/sounds/explosion.ogg", "static/assets/sounds/explosion.mp3"]);
         this.load.audio("audio_pickup", ["static/assets/sounds/pickup.ogg", "static/assets/sounds/pickup.mp3"]);
         this.load.audio("music", ["static/assets/sounds/sci-fi_platformer12.ogg", "static/assets/sounds/sci-fi_platformer12.mp3"]);
-    }
+        
+        this.load.audio("swordlasharmor", ["static/assets/sounds/swords/sword-blade-lashes-chainmail-armor.wav"]);
+        this.load.audio("swordcutarmor", ["static/assets/sounds/swords/sword-cuts-a-chainmail.wav"]);
+        this.load.audio("hit-swoosh", ["static/assets/sounds/swords/metal-hit-woosh.wav"]);
+    //     this.load.audio("sword-lash-armor",["static/assets/sounds/sword-blade-lashes-chainmail-armor.wav"]);
+    //     this.load.audio("sword-cut-armor", ["static/assets/sounds/sword-cuts-a-chainmail.wav"]);
+     }
 
     create(){
         this.add.text(20,20,"Loading Game...");
@@ -310,6 +316,6 @@ class Scene1 extends Phaser.Scene{
             frameRate: 20,
             repeat: -1
         })
-
     }
+
 }

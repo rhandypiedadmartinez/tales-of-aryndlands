@@ -21,6 +21,8 @@ class Skeleton extends Phaser.GameObjects.Sprite{
     }
 
     update(scene){
+        this.manageSound(scene)
+
         if (scene.heroHealth <= 0){
             if (this.anims.getName() != 'skeleton_walk_anim'){
                 this.play('skeleton_walk_anim')
@@ -47,6 +49,27 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         // }        
 
         this.isAttackHitHero(scene)
+    }
+
+    manageSound(scene){
+        //scene.hitswoosh.play()
+        //     }
+        // if (this.anims.getName() == 'skeleton_walk_anim'){
+        //     if (!scene.hitswoosh.isPlaying){
+        //         scene.hitswoosh.play()
+        //     }
+        //     return
+        // } 
+        
+        // if (scene.hitswoosh.isPlaying){
+        //     scene.hitswoosh.stop()
+        // }
+
+        if (this.anims.getName() == 'skeleton_attack_anim'){
+            if (!scene.hitswoosh2.isPlaying){
+                scene.hitswoosh2.play()
+            }
+        }
     }
 
     updateAnim(scene, newDirection){

@@ -14,6 +14,12 @@ class Scene2 extends Phaser.Scene{
         this.explosionSound = this.sound.add("audio_explosion")
         this.pickupSound = this.sound.add("audio_pickup")
       
+        this.hitswoosh = this.sound.add("hit-swoosh", { loop: true })
+        this.hitswoosh2 = this.sound.add("hit-swoosh", { loop: false })
+        
+        this.swordlash = this.sound.add("swordlasharmor", { loop: true })
+        this.swordcut = this.sound.add("swordcutarmor", { loop: true })
+        
         this.music = this.sound.add('music')
 
         var musicConfig = {
@@ -47,7 +53,7 @@ class Scene2 extends Phaser.Scene{
         this.bg_3.setScrollFactor(0);
 
 
-        this.hero = this.physics.add.sprite(config.width/2 - 8, 150, "hero_idle")
+        this.hero = this.physics.add.sprite(config.width/2 - 8, 152, "hero_idle")
         this.hero.play("hero_idle_anim")
        // this.hero.setCollideWorldBounds(true)
         //this.sk = this.physics.add.sprite(config.width/2 - 8, 160, "skeleton_idle")
@@ -156,6 +162,17 @@ class Scene2 extends Phaser.Scene{
         // this.physics.add.overlap(this.player, this.enemies, this.hurtPlayer, null, this)
         // this.physics.add.overlap(this.projectiles, this.enemies, this.hitEnemy, null, this)
     
+
+         var graphics = this.add.graphics();
+         graphics.fillStyle(0x000000, 0.5);
+        //  32px radius on the corners
+        //var graphics = game.add.graphics(300, 200).setInteractive()
+
+        graphics.fillRoundedRect(config.width * 0.75 + this.myCam.scrollX, 6, 50, 10, 2);
+        //graphics.events.onInputDown.add(onDown, this);
+        // graphics.events.onInputUp.add(onUp, this);
+        // graphics.events.onInputOver.add(onOver, this);
+        // graphics.events.onInputOut.add(.onOut, this);
         // var graphics = this.add.graphics()
         // graphics.fillStyle(0x0000000, 1)
         // graphics.beginPath()
@@ -172,6 +189,40 @@ class Scene2 extends Phaser.Scene{
 
 
     }
+
+    // drawShape(fill, style) {
+
+    //     graphics.clear();
+    
+    //     graphics.beginFill(fill);
+    //     graphics.lineStyle(4, style, 1);
+    
+    //     graphics.moveTo(0, 0);
+    //     graphics.lineTo(250, 0);
+    //     graphics.lineTo(250, 200);
+    //     graphics.lineTo(125, 100);
+    //     graphics.lineTo(0, 200);
+    //     graphics.lineTo(0, 0);
+    
+    //     graphics.endFill();
+    
+    // }
+    
+    // onOver() {
+    
+    //     drawShape(0xab3602, 0xeb6702);
+    
+    // }
+    // onDown() {
+    //     drawShape(0x717a02, 0xebfd02);
+    // }
+    // onUp() {
+    //     drawShape(0x027a71, 0x02fdeb);
+    // }
+    // onOut() {
+    //     drawShape(0x027a71, 0x02fdeb);
+    // }
+
 
     enemyAttack(hero, enemy){
         //enemy.attackAnim()
@@ -250,6 +301,9 @@ class Scene2 extends Phaser.Scene{
     }
 
     update(){
+
+        this.manageSound()
+
         var scoreFormatted = this.zeroPad(this.heroHealth, 2)
         this.scorelabel.text = "HEALTH: " + scoreFormatted
 
@@ -317,10 +371,24 @@ class Scene2 extends Phaser.Scene{
         this.scorelabel.x = this.myCam.scrollX + config.width * 0.40 
     }
 
+    manageSound(){
+        if (this.hero.anims.getName() == 'hero_attack_anim'){
+            if (!this.hitswoosh.isPlaying){
+                this.hitswoosh.play()
+            }
+            return
+        } 
+        
+        if (this.hitswoosh.isPlaying){
+            this.hitswoosh.stop()
+        }
+
+    }
+
     gravitate(){
         this.hero.y += this.heroSpeed.y
         
-        if (this.hero.y < 150){  
+        if (this.hero.y < 152){  
             this.heroSpeed.y += 1
         } else {
             this.heroSpeed.y = 0
@@ -341,6 +409,8 @@ class Scene2 extends Phaser.Scene{
         this.attackair = this.SpaceisDown
 
         if (this.SpacejustDown){
+//            this.swordcut.play()
+    //        this.swordlash.play()
             this.spawnSkeleton()
         }
 
@@ -470,7 +540,7 @@ class Scene2 extends Phaser.Scene{
     }
 
     isGravityEnabled(){
-        if (this.hero.y == 150){
+        if (this.hero.y == 152){
             return true
         }
         return false
