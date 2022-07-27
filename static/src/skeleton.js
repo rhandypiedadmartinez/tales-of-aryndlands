@@ -116,7 +116,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
     }
 
     TakeHitOrBlock(){
-        if (Phaser.Math.Between(0,1)==0){
+        if (Phaser.Math.Between(0,100)<=20){
             return true
         }
         return false
@@ -144,22 +144,23 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         //     return false
         // } 
         if (this.goAttack && ((scene.hero.anims.getName() == 'hero_attack_anim'))){ 
-            if (this.anims.getProgress()>0.5){
+            if (this.anims.getProgress()>0.84){
                 if(scene.hero.scaleX != this.scaleX){
                     console.log(this.health)
                     if (this.health > 0){
                         if (this.TakeHitOrBlock){
-                            this.health -= 3
+                            this.health -= 1
                             this.play('skeleton_takehit_anim')
                             this.once('animationcomplete',()=>{
                                 this.play('skeleton_attack_anim')
                                 return
                             })    
                         }
-                        this.play('skeleton_block_anim')
-                        this.once('animationcomplete',()=>{
+                        if (Phaser.Math.Between(0,1)==0){
+                            this.play('skeleton_block_anim')
+                        } else {
                             this.play('skeleton_attack_anim')
-                        })
+                        }
                     }
                     this.callDeath(scene)
                 }
@@ -178,10 +179,11 @@ class Skeleton extends Phaser.GameObjects.Sprite{
                             return
                         })    
                     }
-                    this.play('skeleton_block_anim')
-                    this.once('animationcomplete',()=>{
+                    if (Phaser.Math.Between(0,1)==0){
+                        this.play('skeleton_block_anim')
+                    } else {
                         this.play('skeleton_attack_anim')
-                    })
+                    }
                 }
                 this.callDeath(scene)
             }
