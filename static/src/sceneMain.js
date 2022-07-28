@@ -239,6 +239,16 @@ class Scene2 extends Phaser.Scene{
     }
 
     update(){
+        this.bg_1.tilePositionX = this.myCam.scrollX * .3
+        this.bg_2.tilePositionX = this.myCam.scrollX * .6
+        this.bg_3.tilePositionX = this.myCam.scrollX
+        this.img.x = this.myCam.scrollX + config.width * 0.95
+        this.imgline.x = this.img.x
+        this.text.x = this.img.x - 80
+        this.miko.tilePositionX = this.myCam.scrollX
+        this.ground.tilePositionX = this.myCam.scrollX
+        this.scorelabel.x = this.myCam.scrollX + config.width * 0.40 
+
         this.checkSkeletonNumber()
 
         this.text.setText('Volume: ' + Math.floor((1 - this.img.slider.value)*100) + '%');
@@ -249,8 +259,8 @@ class Scene2 extends Phaser.Scene{
         // }
         this.manageSound()
 
-        var scoreFormatted = this.zeroPad(this.heroHealth, 2)
-        this.scorelabel.text = "HEALTH: " + scoreFormatted
+        var healthFormatted = this.zeroPad(this.heroHealth, 2)
+        this.scorelabel.text = "HEALTH: " + healthFormatted
 
         for(var i = 0; i < this.enemies.getChildren().length; i++){
             var enemy = this.enemies.getChildren()[i];
@@ -308,16 +318,7 @@ class Scene2 extends Phaser.Scene{
         //         this.shootBeam()
         //    }
         // }
-        this.bg_1.tilePositionX = this.myCam.scrollX * .3
-        this.bg_2.tilePositionX = this.myCam.scrollX * .6
-        this.bg_3.tilePositionX = this.myCam.scrollX
-        this.img.x = this.myCam.scrollX + config.width * 0.95
-        this.imgline.x = this.img.x
-        this.text.x = this.img.x - 80
-        this.miko.tilePositionX = this.myCam.scrollX
-        this.ground.tilePositionX = this.myCam.scrollX
-        this.scorelabel.x = this.myCam.scrollX + config.width * 0.40 
-    }
+      }
 
     checkSkeletonNumber(){
         if (this.enemies.getChildren().length < 5){
