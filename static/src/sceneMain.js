@@ -493,10 +493,12 @@ class Scene2 extends Phaser.Scene{
         }
 
         if (this.SpacejustDown){
-            this.hero.play("hero_attack_anim")
-            this.hero.once('animationcomplete',()=> {
-                this.hero.play("hero_idle_anim")
-            })
+            if (this.hero.anims.getName()!='hero_attack_anim'){
+                this.hero.play("hero_attack_anim")
+                this.hero.once('animationcomplete',()=> {
+                    this.hero.play("hero_idle_anim")
+                })                    
+            }
         }
 
         //console.log(this.cursors.space.getDuration())
@@ -597,12 +599,17 @@ class Scene2 extends Phaser.Scene{
             })
         }
 
-        if (this.SpacejustDown){
-            this.hero.play('hero_attack_anim')
-            this.hero.once('animationcomplete', ()=> {
-                this.hero.play("hero_idle_anim")
-            })
-        }
+        // if (this.SpacejustDown){
+        //    // if (this.hero.anims.getName()=='hero_attack_anim'){
+        //         if (this.hero.anims.getProgress()!=1){
+        //             return
+        //         }   
+        //     }
+        //     this.hero.play('hero_attack_anim')
+        //     this.hero.once('animationcomplete', ()=> {
+        //         this.hero.play("hero_idle_anim")
+        //     })
+        // }
     }
 
     checkNotMovingX(){

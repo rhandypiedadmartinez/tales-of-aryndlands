@@ -135,7 +135,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         if (this.anims.getName() == 'skeleton_attack_anim'){
             // attack animation complete
             if (this.anims.getProgress()==1){
-                scene.hero.playAfterDelay('hero_hurt_anim',80)
+                scene.hero.playAfterDelay('hero_hurt_anim',60)
                 
                 // if (scene.hero.anims.getProgress()>0.6){
                 //     if (scene.heroSpeed.x != 0){
@@ -145,7 +145,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
                 // scene.hero.once('animationcomplete',()=>{
                 //     scene.hero.play('hero_run_anim')
                 // })
-               // scene.heroHealth -= 2
+                scene.heroHealth -= 2
             }
          }
         // function heroNormalAttack(){
@@ -214,6 +214,8 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         }
         if (thisX - 40 < heroX){
             this.goAttack = true
+        } else {
+            this.goAttack = false
         }
     }
 
