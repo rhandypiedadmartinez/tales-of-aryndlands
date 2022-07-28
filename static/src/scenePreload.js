@@ -211,7 +211,7 @@ class Scene1 extends Phaser.Scene{
                 end: 2
             }),
             frameRate: 5,
-            repeat: 1
+            repeat: 0
         })
 
         this.anims.create({
@@ -251,7 +251,7 @@ class Scene1 extends Phaser.Scene{
                 start: 1,
                 end: 7
             }),
-            frameRate: 20,
+            frameRate: 15,
             repeat: -1
         })
 

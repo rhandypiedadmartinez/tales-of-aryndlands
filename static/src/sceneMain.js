@@ -90,13 +90,10 @@ class Scene2 extends Phaser.Scene{
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
 //      this.projectiles = this.add.group()
         this.enemies = this.physics.add.group()
-        var skeleton = new Skeleton(this)
-        var skeleton = new Skeleton(this)
-        var skeleton = new Skeleton(this)
-        var skeleton = new Skeleton(this)
-        var skeleton = new Skeleton(this)
-        var skeleton = new Skeleton(this)
-        var skeleton = new Skeleton(this)
+        for(var i=0;i<5;i++){
+            new Skeleton(this)
+        }
+
 
         this.keyObj = this.input.keyboard.addKey('W');  // Get key object
         
@@ -182,10 +179,10 @@ class Scene2 extends Phaser.Scene{
                 y: this.img.y + 10
             }
             ],
-            value: 0.1
+            value: 0.5
         });
         this.img.setDepth(4)
-        this.imgline = this.add.rectangle(this.myCam.scrollX + config.width * 0.90,this.img.y+7.5, 4    , 30, 0xFFFFFF);
+        this.imgline = this.add.rectangle(this.myCam.scrollX + config.width * 0.90,this.img.y, 4, 26, 0xFFFFFF);
         
          //this.lineSlider = this.add.graphics()
          //.lineStyle(3, 0x55ff55, 1)
@@ -242,6 +239,8 @@ class Scene2 extends Phaser.Scene{
     }
 
     update(){
+        this.checkSkeletonNumber()
+
         this.text.setText('Volume: ' + Math.floor((1 - this.img.slider.value)*100) + '%');
         // if (this.pointer.isDown) {
         //     var touchX = this.pointer.x;
@@ -320,6 +319,12 @@ class Scene2 extends Phaser.Scene{
         this.scorelabel.x = this.myCam.scrollX + config.width * 0.40 
     }
 
+    checkSkeletonNumber(){
+        if (this.enemies.getChildren().length < 5){
+            this.spawnSkeleton()
+            console.log(this.enemies.getChildren().length)
+        }
+    }
 
     // drawShape(fill, style) {
 
@@ -475,8 +480,6 @@ class Scene2 extends Phaser.Scene{
         if (this.SpacejustDown){
 //            this.swordcut.play()
     //        this.swordlash.play()
-            this.spawnSkeleton()
-            this.spawnSkeleton()
         }
 
         if (this.cursors.up.getDuration() < 500){
@@ -521,6 +524,13 @@ class Scene2 extends Phaser.Scene{
     }
 
     HeroSpriteChange(){
+        if (this.hero.anims.getName()=='hero_hurt_anim'){
+            if (this.hero.anims.getProgress()==1){
+                console.log('111')
+
+                this.hero.play('hero_idle_anim')
+            }
+        }
         // Running Right
         if (this.RjustDown){
             this.hero.play("hero_run_anim")
