@@ -618,14 +618,6 @@ class Scene2 extends Phaser.Scene{
         //     return
         // }
 
-        // Standing then Jumping
-        if ((this.LisUp && this.RisUp) && this.DjustDown && this.isGravityEnabled()){
-            //this.heroSpeed.y -=  15
-            this.hero.play("hero_slide_anim")
-            this.hero.once('animationcomplete', ()=> {
-                this.hero.play("hero_idle_anim")
-            })
-        }
 
         // if (this.SpacejustDown){
         //    // if (this.hero.anims.getName()=='hero_attack_anim'){
