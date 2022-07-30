@@ -61,6 +61,16 @@ class Scene1 extends Phaser.Scene{
             frameHeight: 64
         })
 
+        this.load.spritesheet('hero_slide','static/assets/spritesheets/knight/Slide.png',{
+            frameWidth: 128,
+            frameHeight: 64
+        })
+
+        this.load.spritesheet('hero_heal','static/assets/spritesheets/knight/Health.png',{
+            frameWidth: 128,
+            frameHeight: 64
+        })
+
         this.load.spritesheet('skeleton_idle','static/assets/spritesheets/monsters/Skeleton/Idle.png',{
             frameWidth: 150,
             frameHeight: 150
@@ -221,6 +231,27 @@ class Scene1 extends Phaser.Scene{
                 end: 3
             }),
             frameRate: 5,
+            repeat: 0
+        })
+
+        this.anims.create({
+            key:"hero_slide_anim",
+            frames: this.anims.generateFrameNumbers("hero_slide",{
+                start: 0,
+                end: 8
+            }),
+            frameRate: 20,
+            repeat: 0
+        })
+
+
+        this.anims.create({
+            key:"hero_heal_anim",
+            frames: this.anims.generateFrameNumbers("hero_heal",{
+                start: 0,
+                end:7
+            }),
+            frameRate: 12,
             repeat: 0
         })
 

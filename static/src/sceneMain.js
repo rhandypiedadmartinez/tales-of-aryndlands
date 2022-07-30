@@ -95,7 +95,7 @@ class Scene2 extends Phaser.Scene{
         }
 
 
-        this.keyObj = this.input.keyboard.addKey('W');  // Get key object
+        this.keyHeal = this.input.keyboard.addKey('H');  // Get key object
         
  
 
@@ -279,7 +279,7 @@ class Scene2 extends Phaser.Scene{
 
      
 
-        var wDown = this.input.keyboard.checkDown(this.keyObj, 10);
+        this.HealjustDown = Phaser.Input.Keyboard.JustDown(this.keyHeal);
 
         this.RjustUp = Phaser.Input.Keyboard.JustUp(this.cursors.right) 
         this.LjustUp = Phaser.Input.Keyboard.JustUp(this.cursors.left)
@@ -287,6 +287,7 @@ class Scene2 extends Phaser.Scene{
         this.RjustDown = Phaser.Input.Keyboard.JustDown(this.cursors.right)
         this.LjustDown = Phaser.Input.Keyboard.JustDown(this.cursors.left)
         this.UjustDown = Phaser.Input.Keyboard.JustDown(this.cursors.up)
+        this.DjustDown = Phaser.Input.Keyboard.JustDown(this.cursors.down)
         
         this.RisDown = this.cursors.right.isDown
         this.LisDown = this.cursors.left.isDown
@@ -527,10 +528,19 @@ class Scene2 extends Phaser.Scene{
     }
 
     HeroSpriteChange(){
+        if (this.heroSpeed.x==0 && this.HealjustDown){
+            if (this.hero.anims.getName() != 'hero_heal_anim'){
+                this.heroHealth += 10
+                this.hero.play('hero_heal_anim')
+                this.hero.once('animationcomplete',()=>{
+                    this.hero.play('hero_idle_anim')
+                })
+                return
+            }
+        }
+
         if (this.hero.anims.getName()=='hero_hurt_anim'){
             if (this.hero.anims.getProgress()==1){
-                console.log('111')
-
                 this.hero.play('hero_idle_anim')
             }
         }
@@ -583,6 +593,23 @@ class Scene2 extends Phaser.Scene{
             })
         }
 
+        // Standing then Jumping
+        if ((this.LisUp && this.RisUp) && this.UjustDown && this.isGravityEnabled()){
+            this.heroSpeed.y -=  15
+            this.hero.play("hero_jump_anim")
+            this.hero.once('animationcomplete', ()=> {
+                this.hero.play("hero_idle_anim")
+            })
+        }
+
+        // Slide
+        if ((this.LisDown || this.RisDown) && this.DjustDown && this.isGravityEnabled()){
+            this.hero.play("hero_slide_anim")
+            this.hero.once('animationcomplete', ()=> {
+                this.hero.play("hero_run_anim")
+            })
+        }
+
         // if (SpacejustDown){
         //     this.hero.play("hero_attack_air_anim")
         //     this.hero.once('animationcomplete', ()=> {
@@ -592,9 +619,9 @@ class Scene2 extends Phaser.Scene{
         // }
 
         // Standing then Jumping
-        if ((this.LisUp && this.RisUp) && this.UjustDown && this.isGravityEnabled()){
-            this.heroSpeed.y -=  15
-            this.hero.play("hero_jump_anim")
+        if ((this.LisUp && this.RisUp) && this.DjustDown && this.isGravityEnabled()){
+            //this.heroSpeed.y -=  15
+            this.hero.play("hero_slide_anim")
             this.hero.once('animationcomplete', ()=> {
                 this.hero.play("hero_idle_anim")
             })
