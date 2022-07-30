@@ -132,7 +132,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
 
     isAttackHitHero(scene){
         // skeleton hurt hero
-        if (scene.isGravityEnabled() == false && this.anims.getName() == 'skeleton_attack_anim'){
+        if (scene.isGravityEnabled() == true && this.anims.getName() == 'skeleton_attack_anim'){
             // attack animation complete
             if (this.anims.getProgress()==1){
                 scene.hero.playAfterDelay('hero_hurt_anim',60)
@@ -145,7 +145,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
                 // scene.hero.once('animationcomplete',()=>{
                 //     scene.hero.play('hero_run_anim')
                 // })
-                scene.heroHealth -= 2
+                scene.heroHealth -= 1
             }
          }
         // function heroNormalAttack(){
