@@ -263,13 +263,6 @@ class Scene2 extends Phaser.Scene {
     }
 
     this.enemies = this.physics.add.group()
-    for (var i = 0; i < 10; i++) {
-      if (Phaser.Math.Between(0, 1) == 0) {
-        new Skeleton(this)
-      } else {
-        new Goblin(this)
-      }
-    }
 
     this.restartButton = this.add.text(
       0,
@@ -361,7 +354,7 @@ class Scene2 extends Phaser.Scene {
     this.ground.tilePositionX = this.myCam.scrollX
     this.scorelabel.x = this.myCam.scrollX + config.width * 0.4
     
-    this.checkSkeletonNumber()
+    this.checkEnemyNumber()
 
     this.text.setText(
       'Volume: ' + Math.floor((1 - this.img.slider.value) * 100) + '%'
@@ -444,10 +437,9 @@ class Scene2 extends Phaser.Scene {
     // }
   }
 
-  checkSkeletonNumber () {
-    if (this.enemies.getChildren().length < 5) {
+  checkEnemyNumber () {
+    if (this.enemies.getChildren().length < 10) {
       this.spawnEnemy()
-
       console.log(this.enemies.getChildren().length)
     }
   }
@@ -777,7 +769,7 @@ class Scene2 extends Phaser.Scene {
   //     this.beamSound.play()
   // }
 
-  spawnSkeleton () {
+  spawnEnemy() {
     if (Phaser.Math.Between(0, 1) == 0) {
       new Skeleton(this)
     } else {
