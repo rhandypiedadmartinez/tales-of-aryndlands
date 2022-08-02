@@ -8,7 +8,7 @@ class Building extends Phaser.GameObjects.Sprite {
       this.setOrigin(0,0)
       scene.add.existing(this)
       scene.buildings.add(this)
-      this.setDepth(1)
+      this.setDepth(2)
 
     }
   }

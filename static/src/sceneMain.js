@@ -104,10 +104,6 @@ class Scene2 extends Phaser.Scene {
       Phaser.Input.Keyboard.KeyCodes.SPACE
     )
     //      this.projectiles = this.add.group()
-    this.enemies = this.physics.add.group()
-    for (var i = 0; i < 5; i++) {
-      new Skeleton(this)
-    }
 
     this.keyHeal = this.input.keyboard.addKey('H') // Get key object
 
@@ -263,6 +259,12 @@ class Scene2 extends Phaser.Scene {
     for (var i = 0; i < 5; i++) {
       new Building(this)
     }
+
+    this.enemies = this.physics.add.group()
+    for (var i = 0; i < 5; i++) {
+      new Skeleton(this)
+    }
+
   }
   checkIfHeroOnTopOfBuilding () {
     // fixes overspeeding to target land offset
@@ -274,14 +276,13 @@ class Scene2 extends Phaser.Scene {
 
     if (building == null) {
       this.heroOffsetY = 2
-      this.hero.setDepth(3)
       return
     }
 
     if (this.hero.x > building.x && this.hero.x < building.x + building.width) {
       if (this.hero.y < building.y) {
-        this.heroOffsetY = -building.height + this.shopPaddingTop
         this.hero.setDepth(1)
+        this.heroOffsetY = -building.height + this.shopPaddingTop
         return
       }
       return
@@ -300,6 +301,8 @@ class Scene2 extends Phaser.Scene {
         return building
       }
     }
+
+    this.hero.setDepth(3)
     return null
 
     // if (this.hero.y + this.heroSpeed.y > this.landY + this.heroOffsetY) {

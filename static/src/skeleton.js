@@ -14,6 +14,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         }
         var y = 150 + 10
         super(scene,x,y,"skeleton_walk")
+        this.setDepth(4)
         scene.add.existing(this);
 
         this.offsetY = 10
@@ -146,13 +147,9 @@ class Skeleton extends Phaser.GameObjects.Sprite{
     }
 
     isAttackHitHero(scene){
-        // skeleton hurt hero
-        if (this.isSameY(scene)==false){
-            return
-        }
         if (this.anims.getName() == 'skeleton_attack_anim'){
             // attack animation complete
-            if (this.anims.getProgress()>0.5){
+            if (this.anims.getProgress()>0.8){
                 scene.hero.playAfterDelay('hero_hurt_anim',60)
                 
                 // if (scene.hero.anims.getProgress()>0.6){
@@ -176,7 +173,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         //     return false
         // } 
         if (this.goAttack && ((scene.hero.anims.getName() == 'hero_attack_anim'))){ 
-            if (this.anims.getProgress()>0.5){
+            if (this.anims.getProgress()>0.8){
                 if(scene.hero.scaleX != this.scaleX){
                     //console.log(this.health)
                     if (this.health > 0){
