@@ -6,7 +6,7 @@ var config = {
         autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
     },
     width: 540, //1080, //252,
-    height: 200,//1920, //272,
+    height: 215,//1920, //272,
     backgroundColor: 0x2F4F4F,
     scene: [Scene1, Scene2],
     pixelart: true,
@@ -20,7 +20,8 @@ var config = {
 
 var gameSettings = {
     playerSpeed: 200,
-    fullWidth: config.width * 3
+    fullWidth: config.width * 3,
+    landY: 150
 }
 
 

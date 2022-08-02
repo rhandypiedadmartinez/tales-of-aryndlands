@@ -12,10 +12,11 @@ class Skeleton extends Phaser.GameObjects.Sprite{
             }
             return Phaser.Math.Between(heroX+300, mapWidth)
         }
-
-        var y = 160
+        var y = 150 + 10
         super(scene,x,y,"skeleton_walk")
         scene.add.existing(this);
+
+        this.offsetY = 10
         
         this.greenhealthIndicator = scene.add.rectangle(this.x,this.y-50, 20, 3, 0x00FF00);
         this.redhealthIndicator = scene.add.rectangle(this.x,this.y-50, 20, 3, 0xFF0000);
@@ -38,6 +39,9 @@ class Skeleton extends Phaser.GameObjects.Sprite{
     }
 
     update(scene){
+
+        this.isSameY(scene)
+
         this.updateHealthIndicator(scene)
         this.manageSound(scene)
 
@@ -65,7 +69,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
 
         this.direction = this.getDirection(scene.hero.x,this.x)
         this.scaleX = this.getFacing(scene.hero.x,this.x)
-        this.body.velocity.x = this.direction * 100
+        this.body.velocity.x = this.direction * Phaser.Math.Between(10,200)
         
         // if (this.health == 0){
         //     this.destroy()
@@ -110,7 +114,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         //console.log(this.anims.duration)
         if (this.direction != newDirection){
             if (newDirection == 0){
-                if (this.goAttack){
+                if (this.goAttack && this.isSameY(scene)){
                     this.play('skeleton_attack_anim')
                     return
                 }
@@ -130,9 +134,23 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         return true
     }
 
+    isSameY(scene){
+        var y1 = scene.hero.y - 2
+        var y2 = this.y - this.offsetY
+        if (y1==y2){
+            //console.log(y1 + ' ' + y2)
+            return true
+        }
+        //console.log(y1 + ' ' + y2)
+        return false
+    }
+
     isAttackHitHero(scene){
         // skeleton hurt hero
-        if (scene.isGravityEnabled() == true && this.anims.getName() == 'skeleton_attack_anim'){
+        if (this.isSameY(scene)==false){
+            return
+        }
+        if (this.anims.getName() == 'skeleton_attack_anim'){
             // attack animation complete
             if (this.anims.getProgress()>0.5){
                 scene.hero.playAfterDelay('hero_hurt_anim',60)
