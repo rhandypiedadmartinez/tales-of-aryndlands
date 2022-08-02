@@ -719,7 +719,10 @@ class Scene2 extends Phaser.Scene {
       this.isGravityEnabled()
     ) {
       this.heroSpeed.y -= 15
+      this.hero.play('hero_roll_anim')
+
       this.hero.play('hero_jump_anim')
+
       this.hero.once('animationcomplete', () => {
         this.hero.play('hero_run_anim')
       })
@@ -737,8 +740,7 @@ class Scene2 extends Phaser.Scene {
     // Roll
     if (
       (this.LisDown || this.RisDown) &&
-      this.DjustDown &&
-      this.isGravityEnabled()
+      this.DjustDown
     ) {
       this.hero.play('hero_roll_anim')
       this.hero.once('animationcomplete', () => {
