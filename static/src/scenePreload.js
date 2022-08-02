@@ -458,7 +458,7 @@ class Scene1 extends Phaser.Scene {
         start: 0,
         end: 7
       }),
-      frameRate: 12,
+      frameRate: 20,
       repeat: 0
     })
 

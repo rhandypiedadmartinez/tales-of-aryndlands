@@ -6,7 +6,7 @@ class Scene2 extends Phaser.Scene {
   }
 
   create () {
-
+    this.kills = 0
     this.landY = 150
     this.heroOffsetY = 2
 
@@ -55,7 +55,7 @@ class Scene2 extends Phaser.Scene {
     this.bg_2.setScrollFactor(0)
 
     this.miko = this.physics.add.sprite(config.width / 2 - 30, 130, 'miko')
-    this.miko.setScale(0.15)
+    this.miko.setScale(0.10)
     this.miko.play('miko_anim')
 
     this.shopPaddingTop = 47
@@ -209,6 +209,7 @@ class Scene2 extends Phaser.Scene {
     // .strokePoints(this.img.slider.endPoints);
 
     this.text = this.add.bitmapText(0, 5, 'pixelFont', 'HEALTH: ', 16)
+    this.killsText = this.add.bitmapText(0, 5, 'pixelFont', 'HEALTH: ', 16)
 
     // this.enemies = this.physics.add.group()
     // this.enemies.add(this.obj1)
@@ -252,6 +253,8 @@ class Scene2 extends Phaser.Scene {
 
     this.scorelabel = this.add.bitmapText(10, 5, 'pixelFont', 'HEALTH: ', 16)
 
+    this.msg = this.add.bitmapText(this.hero.x, this.hero.y, 'pixelFont', 'Press H to Heal', 16)
+    this.msg.visible = false
     // add random decorations
     for (var i = 0; i < 35; i++) {
       new Decoration(this)
@@ -340,9 +343,19 @@ class Scene2 extends Phaser.Scene {
     //  }
   }
 
-  update () {
+  checkHealth(){
+    if (this.heroHealth < 70){
+      this.msg.visible = true
+      this.msg.x = this.hero.x + 20
+      this.msg.y = this.hero.y
+      this.msg.alpha = 0.7
+    } else {
+      this.msg.visible = false
+    }
+  }
 
-    
+  update () {
+    this.checkHealth()
     this.checkIfHeroOnTopOfBuilding()
     this.bg_1.tilePositionX = this.myCam.scrollX * 0.3
     this.bg_2.tilePositionX = this.myCam.scrollX * 0.6
@@ -350,6 +363,8 @@ class Scene2 extends Phaser.Scene {
     this.img.x = this.myCam.scrollX + config.width * 0.95
     this.imgline.x = this.img.x
     this.text.x = this.img.x - 80
+    
+    this.killsText.x = this.myCam.scrollX + config.width * 0.07
     this.miko.tilePositionX = this.myCam.scrollX
     this.ground.tilePositionX = this.myCam.scrollX
     this.scorelabel.x = this.myCam.scrollX + config.width * 0.4
@@ -358,6 +373,10 @@ class Scene2 extends Phaser.Scene {
 
     this.text.setText(
       'Volume: ' + Math.floor((1 - this.img.slider.value) * 100) + '%'
+    )
+
+    this.killsText.setText(
+      'Kills: ' + this.kills
     )
     // if (this.pointer.isDown) {
     //     var touchX = this.pointer.x;
@@ -438,7 +457,7 @@ class Scene2 extends Phaser.Scene {
   }
 
   checkEnemyNumber () {
-    if (this.enemies.getChildren().length < 10) {
+    if (this.enemies.getChildren().length < 10 + this.kills/4) {
       this.spawnEnemy()
       console.log(this.enemies.getChildren().length)
     }
@@ -637,7 +656,7 @@ class Scene2 extends Phaser.Scene {
   }
 
   HeroSpriteChange () {
-    if (this.heroSpeed.x == 0 && this.HealjustDown) {
+    if (this.heroSpeed.x == 0 && this.HealjustDown && this.heroHealth < 100) {
       if (this.hero.anims.getName() != 'hero_heal_anim') {
         this.heroHealth += 10
         this.hero.play('hero_heal_anim')

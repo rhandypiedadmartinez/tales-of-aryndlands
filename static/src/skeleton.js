@@ -247,7 +247,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
             })
             return
         }
-        if (chance < 60){  
+        if (chance < 80){  
             this.play('skeleton_attack_anim')
             this.once('animationcomplete',()=>{
                 this.play('skeleton_block_anim')    
@@ -263,6 +263,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
             this.once('animationcomplete',()=>{
                 this.greenhealthIndicator.destroy()
                 this.redhealthIndicator.destroy()
+                scene.kills += 1
                 this.destroy()
             })
             return
@@ -275,6 +276,8 @@ class Skeleton extends Phaser.GameObjects.Sprite{
             this.once('animationcomplete',()=>{
                 this.greenhealthIndicator.destroy()
                 this.redhealthIndicator.destroy()
+
+                scene.kills += 1
                 this.destroy()            
                 
             })

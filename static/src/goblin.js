@@ -235,7 +235,7 @@ class Goblin extends Phaser.GameObjects.Sprite{
 
     blockAttackOrVulnerable(){
         var chance = Phaser.Math.Between(0,100)
-        if (chance < 60){  
+        if (chance < 40){  
             this.play('goblin_attack_anim')
             this.once('animationcomplete',()=>{   
             })
@@ -250,6 +250,7 @@ class Goblin extends Phaser.GameObjects.Sprite{
             this.once('animationcomplete',()=>{
                 this.greenhealthIndicator.destroy()
                 this.redhealthIndicator.destroy()
+                scene.kills += 1
                 this.destroy()
             })
             return
@@ -262,6 +263,8 @@ class Goblin extends Phaser.GameObjects.Sprite{
             this.once('animationcomplete',()=>{
                 this.greenhealthIndicator.destroy()
                 this.redhealthIndicator.destroy()
+
+                scene.kills += 1
                 this.destroy()            
                 
             })
