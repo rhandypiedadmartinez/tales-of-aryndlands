@@ -147,6 +147,9 @@ class Skeleton extends Phaser.GameObjects.Sprite{
     }
 
     isAttackHitHero(scene){
+        if (this.isSameY(scene)==false){
+            return
+        }
         if (this.anims.getName() == 'skeleton_attack_anim'){
             // attack animation complete
             if (this.anims.getProgress()>0.8){
