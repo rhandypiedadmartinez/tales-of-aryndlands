@@ -55,7 +55,7 @@ class Scene2 extends Phaser.Scene {
     this.bg_2.setScrollFactor(0)
 
     this.miko = this.physics.add.sprite(config.width / 2 - 30, 130, 'miko')
-    this.miko.setScale(0.10)
+    this.miko.setScale(0.1)
     this.miko.play('miko_anim')
 
     this.shopPaddingTop = 47
@@ -253,7 +253,13 @@ class Scene2 extends Phaser.Scene {
 
     this.scorelabel = this.add.bitmapText(10, 5, 'pixelFont', 'HEALTH: ', 16)
 
-    this.msg = this.add.bitmapText(this.hero.x, this.hero.y, 'pixelFont', 'Press H to Heal', 16)
+    this.msg = this.add.bitmapText(
+      this.hero.x,
+      this.hero.y,
+      'pixelFont',
+      'Press H to Heal',
+      16
+    )
     this.msg.visible = false
     // add random decorations
     for (var i = 0; i < 35; i++) {
@@ -267,25 +273,24 @@ class Scene2 extends Phaser.Scene {
 
     this.enemies = this.physics.add.group()
 
-    this.restartButton = this.add.text(
-      0,
-      0,
-      'Click to Restart Game'
-    ).setStyle({fill: '#0f0',backgroundColor: '#111', fontSize:15})
-    .setDepth(5).setInteractive({ useHandCursor: true })
-    .on('pointerdown', ()=>{ 
+    this.restartButton = this.add
+      .text(0, 0, 'Click to Restart Game')
+      .setStyle({ fill: '#0f0', backgroundColor: '#111', fontSize: 15 })
+      .setDepth(5)
+      .setInteractive({ useHandCursor: true })
+      .on('pointerdown', () => {
         new Phaser.Game(config)
         this.sys.game.destroy(true)
-    })
-    .on('pointerover', () => this.restartButton.setStyle({ backgroundColor:'#FFF' }))
-    .on('pointerout', () => this.restartButton.setStyle({ backgroundColor:'#111' }))
+      })
+      .on('pointerover', () =>
+        this.restartButton.setStyle({ backgroundColor: '#FFF' })
+      )
+      .on('pointerout', () =>
+        this.restartButton.setStyle({ backgroundColor: '#111' })
+      )
 
     this.restartButton.visible = false
-    
-    
   }
-
-
 
   checkIfHeroOnTopOfBuilding () {
     // fixes overspeeding to target land offset
@@ -343,8 +348,8 @@ class Scene2 extends Phaser.Scene {
     //  }
   }
 
-  checkHealth(){
-    if (this.heroHealth < 70){
+  checkHealth () {
+    if (this.heroHealth < 70) {
       this.msg.visible = true
       this.msg.x = this.hero.x + 20
       this.msg.y = this.hero.y
@@ -363,21 +368,19 @@ class Scene2 extends Phaser.Scene {
     this.img.x = this.myCam.scrollX + config.width * 0.95
     this.imgline.x = this.img.x
     this.text.x = this.img.x - 80
-    
+
     this.killsText.x = this.myCam.scrollX + config.width * 0.07
     this.miko.tilePositionX = this.myCam.scrollX
     this.ground.tilePositionX = this.myCam.scrollX
     this.scorelabel.x = this.myCam.scrollX + config.width * 0.4
-    
+
     this.checkEnemyNumber()
 
     this.text.setText(
       'Volume: ' + Math.floor((1 - this.img.slider.value) * 100) + '%'
     )
 
-    this.killsText.setText(
-      'Kills: ' + this.kills
-    )
+    this.killsText.setText('Kills: ' + this.kills)
     // if (this.pointer.isDown) {
     //     var touchX = this.pointer.x;
     //     var touchY = this.pointer.y;
@@ -387,14 +390,13 @@ class Scene2 extends Phaser.Scene {
 
     var healthFormatted = this.zeroPad(this.heroHealth, 2)
     this.scorelabel.text = 'HEALTH: ' + healthFormatted
-    
+
     for (var i = 0; i < this.enemies.getChildren().length; i++) {
       var enemy = this.enemies.getChildren()[i]
       enemy.update(this)
     }
 
     if (this.heroHealth <= 0 && this.isGravityEnabled()) {
-      
       if (this.hero.anims.getName() != 'hero_death_anim') {
         this.hero.playAfterDelay('hero_death_anim', 500)
       }
@@ -406,11 +408,11 @@ class Scene2 extends Phaser.Scene {
         this.restartButton.visible = true
         this.restartButton.x = this.myCam.scrollX + config.width * 0.3
         this.restartButton.y = config.height * 0.45
-        
+
         this.restartButton.setDepth(5)
         this.isRestartDialogCreated == true
       }
-      
+
       return
     }
 
@@ -457,7 +459,7 @@ class Scene2 extends Phaser.Scene {
   }
 
   checkEnemyNumber () {
-    if (this.enemies.getChildren().length < 10 + this.kills/4) {
+    if (this.enemies.getChildren().length < 10 + this.kills / 4) {
       this.spawnEnemy()
       console.log(this.enemies.getChildren().length)
     }
@@ -737,16 +739,26 @@ class Scene2 extends Phaser.Scene {
       })
     }
 
-    // Roll
-    if (
-      (this.LisDown || this.RisDown) &&
-      this.DjustDown
-    ) {
+    if (this.hero.anims.getName() == 'hero_slide_anim' && this.isGravityEnabled() == false){
+      console.log('sliding mid air')
       this.hero.play('hero_roll_anim')
+    }
+    // Roll or Slide
+    if ((this.LisDown || this.RisDown) && this.DjustDown) {
+      if (this.isGravityEnabled()) {
+        if (Phaser.Math.Between(0, 1) == 0) {
+          this.hero.play('hero_roll_anim')
+        } else {
+          this.hero.play('hero_slide_anim')
+        }
+      } else {
+        this.hero.play('hero_roll_anim')
+      }
       this.hero.once('animationcomplete', () => {
         this.hero.play('hero_run_anim')
       })
     }
+
 
     // if (SpacejustDown){
     //     this.hero.play("hero_attack_air_anim")
@@ -790,7 +802,7 @@ class Scene2 extends Phaser.Scene {
   //     this.beamSound.play()
   // }
 
-  spawnEnemy() {
+  spawnEnemy () {
     if (Phaser.Math.Between(0, 1) == 0) {
       new Skeleton(this)
     } else {
