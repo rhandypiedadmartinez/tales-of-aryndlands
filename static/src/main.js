@@ -24,5 +24,4 @@ var gameSettings = {
     landY: 150
 }
 
-
 var game = new Phaser.Game(config)

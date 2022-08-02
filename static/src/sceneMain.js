@@ -6,6 +6,7 @@ class Scene2 extends Phaser.Scene {
   }
 
   create () {
+
     this.landY = 150
     this.heroOffsetY = 2
 
@@ -24,6 +25,7 @@ class Scene2 extends Phaser.Scene {
 
     this.music = this.sound.add('music')
 
+    this.isRestartDialogCreated = false
     var musicConfig = {
       mute: false,
       volume: 1,
@@ -60,7 +62,7 @@ class Scene2 extends Phaser.Scene {
 
     this.buildings = this.add.group()
     //next time gawan to ng class pati other background decorations
-    this.shop = this.physics.add.sprite(120, 55, 'shop')
+    this.shop = this.physics.add.sprite(50, 55, 'shop')
     this.shop.setOrigin(0, 0)
     this.shop.play('shop_anim')
     this.shop.setDepth(2)
@@ -75,8 +77,8 @@ class Scene2 extends Phaser.Scene {
     this.bg_3.setOrigin(0, 0)
     this.bg_3.setScrollFactor(0)
 
-    this.hero = this.physics.add.sprite(this.shop.x + 70, 52, 'hero_idle')
-    this.hero.play('hero_idle_anim')
+    this.hero = this.physics.add.sprite(this.shop.x + 100, 52, 'hero_idle')
+    this.hero.play('hero_pray_anim')
     // this.hero.setCollideWorldBounds(true)
     //this.sk = this.physics.add.sprite(config.width/2 - 8, 160, "skeleton_idle")
     //this.sk.play("skeleton_idle_anim")
@@ -178,8 +180,6 @@ class Scene2 extends Phaser.Scene {
       this
     )
 
-
-    
     //slider FINALLLLLYYY
     this.img = this.add.circle(500, 20, 5, 0xff7873)
     this.img.slider = this.plugins.get('rexsliderplugin').add(this.img, {
@@ -253,10 +253,10 @@ class Scene2 extends Phaser.Scene {
     this.scorelabel = this.add.bitmapText(10, 5, 'pixelFont', 'HEALTH: ', 16)
 
     // add random decorations
-    for (var i = 0; i < 20; i++) {
+    for (var i = 0; i < 35; i++) {
       new Decoration(this)
     }
-  
+
     this.buildings.add(this.shop)
     for (var i = 0; i < 5; i++) {
       new Building(this)
@@ -264,17 +264,33 @@ class Scene2 extends Phaser.Scene {
 
     this.enemies = this.physics.add.group()
     for (var i = 0; i < 10; i++) {
-      if (Phaser.Math.Between(0,1)==0){
+      if (Phaser.Math.Between(0, 1) == 0) {
         new Skeleton(this)
-      }
-      else {
+      } else {
         new Goblin(this)
       }
     }
 
-    
+    this.restartButton = this.add.text(
+      0,
+      0,
+      'Click to Restart Game'
+    ).setStyle({fill: '#0f0',backgroundColor: '#111', fontSize:15})
+    .setDepth(5).setInteractive({ useHandCursor: true })
+    .on('pointerdown', ()=>{ 
+        new Phaser.Game(config)
+        this.sys.game.destroy(true)
+    })
+    .on('pointerover', () => this.restartButton.setStyle({ backgroundColor:'#FFF' }))
+    .on('pointerout', () => this.restartButton.setStyle({ backgroundColor:'#111' }))
 
+    this.restartButton.visible = false
+    
+    
   }
+
+
+
   checkIfHeroOnTopOfBuilding () {
     // fixes overspeeding to target land offset
     if (this.hero.y + this.heroSpeed.y > this.landY + this.heroOffsetY) {
@@ -332,6 +348,8 @@ class Scene2 extends Phaser.Scene {
   }
 
   update () {
+
+    
     this.checkIfHeroOnTopOfBuilding()
     this.bg_1.tilePositionX = this.myCam.scrollX * 0.3
     this.bg_2.tilePositionX = this.myCam.scrollX * 0.6
@@ -342,7 +360,7 @@ class Scene2 extends Phaser.Scene {
     this.miko.tilePositionX = this.myCam.scrollX
     this.ground.tilePositionX = this.myCam.scrollX
     this.scorelabel.x = this.myCam.scrollX + config.width * 0.4
-
+    
     this.checkSkeletonNumber()
 
     this.text.setText(
@@ -357,19 +375,30 @@ class Scene2 extends Phaser.Scene {
 
     var healthFormatted = this.zeroPad(this.heroHealth, 2)
     this.scorelabel.text = 'HEALTH: ' + healthFormatted
-
+    
     for (var i = 0; i < this.enemies.getChildren().length; i++) {
       var enemy = this.enemies.getChildren()[i]
       enemy.update(this)
     }
 
     if (this.heroHealth <= 0 && this.isGravityEnabled()) {
+      
       if (this.hero.anims.getName() != 'hero_death_anim') {
         this.hero.playAfterDelay('hero_death_anim', 500)
       }
       if (this.hero.anims.currentFrame.index == 4) {
         this.hero.anims.pause()
       }
+
+      if (this.isRestartDialogCreated == false) {
+        this.restartButton.visible = true
+        this.restartButton.x = this.myCam.scrollX + config.width * 0.3
+        this.restartButton.y = config.height * 0.45
+        
+        this.restartButton.setDepth(5)
+        this.isRestartDialogCreated == true
+      }
+      
       return
     }
 
@@ -417,8 +446,7 @@ class Scene2 extends Phaser.Scene {
 
   checkSkeletonNumber () {
     if (this.enemies.getChildren().length < 5) {
-
-        this.spawnEnemy()
+      this.spawnEnemy()
 
       console.log(this.enemies.getChildren().length)
     }
@@ -457,67 +485,67 @@ class Scene2 extends Phaser.Scene {
   //     drawShape(0x027a71, 0x02fdeb);
   // }
 
-  enemyAttack (hero, enemy) {
-    //enemy.attackAnim()
-  }
+  // enemyAttack (hero, enemy) {
+  //   //enemy.attackAnim()
+  // }
 
-  hitEnemy (projectile, enemy) {
-    //this.explosionSound.play()
-    //projectile.destroy()
-    //this.score += 15
+  // hitEnemy (projectile, enemy) {
+  //   //this.explosionSound.play()
+  //   //projectile.destroy()
+  //   //this.score += 15
 
-    //var explosion = new Explosion(this, enemy.x, enemy.y)
-    // this.explosion = this.add.sprite(enemy.x,enemy.y, 'explosion')
-    // this.explosion.play('explode')
-    // this.explosion.once('animationcomplete', ()=>
-    // {
-    //     this.explosion.destroy()
-    // })
+  //   //var explosion = new Explosion(this, enemy.x, enemy.y)
+  //   // this.explosion = this.add.sprite(enemy.x,enemy.y, 'explosion')
+  //   // this.explosion.play('explode')
+  //   // this.explosion.once('animationcomplete', ()=>
+  //   // {
+  //   //     this.explosion.destroy()
+  //   // })
 
-    this.resetPos(enemy)
-    projectile.destroy()
-  }
+  //   this.resetPos(enemy)
+  //   projectile.destroy()
+  // }
 
-  hurtPlayer (player, enemy) {
-    this.resetPos(enemy)
+  // hurtPlayer (player, enemy) {
+  //   this.resetPos(enemy)
 
-    if (this.player.alpha < 1) {
-      return
-    }
-    var explosion = new Explosion(this, player.x, player.y)
-    player.disableBody(true, true)
-    //this.resetPlayer()
-    this.time.addEvent({
-      delay: 1000,
-      callback: this.resetPlayer,
-      callbackScope: this,
-      loop: false
-    })
-  }
+  //   if (this.player.alpha < 1) {
+  //     return
+  //   }
+  //   var explosion = new Explosion(this, player.x, player.y)
+  //   player.disableBody(true, true)
+  //   //this.resetPlayer()
+  //   this.time.addEvent({
+  //     delay: 1000,
+  //     callback: this.resetPlayer,
+  //     callbackScope: this,
+  //     loop: false
+  //   })
+  // }
 
-  resetPlayer () {
-    var x = config.width / 2 - 8
-    var y = config.height + 64
-    this.player.enableBody(true, x, y, true, true)
-    this.player.alpha = 0.5
+  // resetPlayer () {
+  //   var x = config.width / 2 - 8
+  //   var y = config.height + 64
+  //   this.player.enableBody(true, x, y, true, true)
+  //   this.player.alpha = 0.5
 
-    var tween = this.tweens.add({
-      targets: this.player,
-      y: config.height - 64,
-      ease: 'Power1',
-      duration: 1500,
-      repeat: 0,
-      onComplete: function () {
-        this.player.alpha = 1
-      },
-      callbackScope: this
-    })
-  }
+  //   var tween = this.tweens.add({
+  //     targets: this.player,
+  //     y: config.height - 64,
+  //     ease: 'Power1',
+  //     duration: 1500,
+  //     repeat: 0,
+  //     onComplete: function () {
+  //       this.player.alpha = 1
+  //     },
+  //     callbackScope: this
+  //   })
+  // }
 
-  pickPowerUp (player, powerUp) {
-    this.pickupSound.play()
-    powerUp.disableBody(true, true)
-  }
+  // pickPowerUp (player, powerUp) {
+  //   this.pickupSound.play()
+  //   powerUp.disableBody(true, true)
+  // }
 
   // move(obj, speed){
   //     obj.y += speed
@@ -750,12 +778,11 @@ class Scene2 extends Phaser.Scene {
   // }
 
   spawnSkeleton () {
-    if (Phaser.Math.Between(0,1)==0){
+    if (Phaser.Math.Between(0, 1) == 0) {
       new Skeleton(this)
     } else {
       new Goblin(this)
     }
-    
   }
 
   destroyObj (pointer, gameObject) {

@@ -67,6 +67,16 @@ class Scene1 extends Phaser.Scene {
     )
 
     this.load.spritesheet(
+      'hero_pray',
+      'static/assets/spritesheets/knight/Pray.png',
+      {
+        frameWidth: 128,
+        frameHeight: 64
+      }
+    )
+
+
+    this.load.spritesheet(
       'hero_run',
       'static/assets/spritesheets/knight/Run.png',
       {
@@ -380,6 +390,16 @@ class Scene1 extends Phaser.Scene {
       }),
       frameRate: 30,
       repeat: 1
+    })
+
+    this.anims.create({
+      key: 'hero_pray_anim',
+      frames: this.anims.generateFrameNumbers('hero_pray', {
+        start: 2,
+        end: 9
+      }),
+      frameRate: 10,
+      repeat: -1
     })
 
     this.anims.create({

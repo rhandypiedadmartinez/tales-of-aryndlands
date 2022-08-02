@@ -1,6 +1,6 @@
 class Building extends Phaser.GameObjects.Sprite {
     constructor (scene) {
-      var x = Phaser.Math.Between(0, gameSettings.fullWidth)
+      var x = Phaser.Math.Between(350, gameSettings.fullWidth)
       var y = 55
   
       super(scene, x, y, 'shop')
