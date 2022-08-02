@@ -739,14 +739,14 @@ class Scene2 extends Phaser.Scene {
       })
     }
 
+    // Roll or Slide
     if (this.hero.anims.getName() == 'hero_slide_anim' && this.isGravityEnabled() == false){
-      console.log('sliding mid air')
       this.hero.play('hero_roll_anim')
     }
-    // Roll or Slide
+
     if ((this.LisDown || this.RisDown) && this.DjustDown) {
       if (this.isGravityEnabled()) {
-        if (Phaser.Math.Between(0, 1) == 0) {
+        if (Phaser.Math.Between(0, 100) < 80) {
           this.hero.play('hero_roll_anim')
         } else {
           this.hero.play('hero_slide_anim')
