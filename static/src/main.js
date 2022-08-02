@@ -1,7 +1,3 @@
-var gameSettings = {
-    playerSpeed: 200
-}
-
 var config = {
     type: Phaser.AUTO,
     parent: 'parentMain',
@@ -21,5 +17,11 @@ var config = {
         }
     }
 }
+
+var gameSettings = {
+    playerSpeed: 200,
+    fullWidth: config.width * 3
+}
+
 
 var game = new Phaser.Game(config)

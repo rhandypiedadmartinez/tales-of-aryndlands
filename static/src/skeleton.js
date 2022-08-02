@@ -134,7 +134,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         // skeleton hurt hero
         if (scene.isGravityEnabled() == true && this.anims.getName() == 'skeleton_attack_anim'){
             // attack animation complete
-            if (this.anims.getProgress()==1){
+            if (this.anims.getProgress()>0.5){
                 scene.hero.playAfterDelay('hero_hurt_anim',60)
                 
                 // if (scene.hero.anims.getProgress()>0.6){

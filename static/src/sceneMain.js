@@ -69,7 +69,7 @@ class Scene2 extends Phaser.Scene{
         //this.sk.play("skeleton_idle_anim")
 
         this.myCam = this.cameras.main;
-        this.myCam.setBounds(0, 0, game.config.width * 3, game.config.height);
+        this.myCam.setBounds(0, 0, gameSettings.fullWidth, game.config.height);
         this.myCam.startFollow(this.hero);
         this.cursors = this.input.keyboard.createCursorKeys();
         
@@ -232,10 +232,12 @@ class Scene2 extends Phaser.Scene{
         // graphics.closePath()
         // graphics.fillPath()
 
-             
         this.scorelabel = this.add.bitmapText(10,5,"pixelFont","HEALTH: ",16)
 
-
+        // add random decorations
+        for(var i=0; i<20; i++){
+            new Decoration(this)
+        }
     }
 
     update(){
@@ -602,9 +604,9 @@ class Scene2 extends Phaser.Scene{
             })
         }
 
-        // Slide
+        // Roll
         if ((this.LisDown || this.RisDown) && this.DjustDown && this.isGravityEnabled()){
-            this.hero.play("hero_slide_anim")
+            this.hero.play("hero_roll_anim")
             this.hero.once('animationcomplete', ()=> {
                 this.hero.play("hero_run_anim")
             })
