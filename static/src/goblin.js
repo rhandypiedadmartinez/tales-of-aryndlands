@@ -1,4 +1,4 @@
-class Skeleton extends Phaser.GameObjects.Sprite{
+class Goblin extends Phaser.GameObjects.Sprite{
     constructor(scene){
         var x = setXnotNearHero(scene.hero.x)
 
@@ -13,7 +13,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
             return Phaser.Math.Between(heroX+300, mapWidth)
         }
         var y = 150 + 10
-        super(scene,x,y,"skeleton_walk")
+        super(scene,x,y,"goblin_idle")
         this.setDepth(4)
         scene.add.existing(this);
 
@@ -26,7 +26,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         this.redhealthIndicator.setDepth(2)
 
         this.health = 20
-        this.play("skeleton_walk_anim");
+        this.play("goblin_run_anim");
         this.goAttack = false
 
         scene.enemies.add(this)
@@ -35,7 +35,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         this.setDepth(2)
         scene.physics.world.enableBody(this);
         this.body.velocity.x = -15;
-        this.instanceSpeed = Phaser.Math.Between(50,150)
+        this.instanceSpeed = Phaser.Math.Between(150,250)
         //this.body.setCollideWorldBounds(true)
         //scene.projectiles.add(this)
     }
@@ -53,8 +53,8 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         }
 
         if (scene.heroHealth <= 0){
-            if (this.anims.getName() != 'skeleton_walk_anim'){
-                this.play('skeleton_walk_anim')
+            if (this.anims.getName() != 'goblin_run_anim'){
+                this.play('goblin_run_anim')
             }
             this.body.velocity.x = this.scaleX * this.instanceSpeed
             return
@@ -63,7 +63,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         ///console.log(scene.hero.x)
         // if (this.)
         // if (Math.floor(this.x) == Math.floor(scene.hero.x) + 100){
-        //     this.play("skeleton_attack_anim");
+        //     this.play("goblin_attack_anim");
         // } 
         var newDirection = this.getDirection(scene.hero.x,this.x)
 
@@ -92,7 +92,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
     manageSound(scene){
         //scene.hitswoosh.play()
         //     }
-        // if (this.anims.getName() == 'skeleton_walk_anim'){
+        // if (this.anims.getName() == 'goblin_run_anim'){
         //     if (!scene.hitswoosh.isPlaying){
         //         scene.hitswoosh.play()
         //     }
@@ -102,7 +102,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         // if (scene.hitswoosh.isPlaying){
         //     scene.hitswoosh.stop()
         // }
-        if (this.anims.getName() == 'skeleton_attack_anim'){       
+        if (this.anims.getName() == 'goblin_attack_anim'){       
             if (!scene.hitswoosh2.isPlaying){
                 if (this.anims.getProgress()==1){
                 scene.hitswoosh2.play()
@@ -117,22 +117,17 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         if (this.direction != newDirection){
             if (newDirection == 0){
                 if (this.goAttack && this.isSameY(scene)){
-                    this.play('skeleton_attack_anim')
+                    this.play('goblin_attack_anim')
                     return
                 }
-                this.play('skeleton_idle_anim')        
+                this.play('goblin_idle_anim')        
             } else {
-                this.play('skeleton_walk_anim')
+                this.play('goblin_run_anim')
             }
         }
     }
 
     TakeHitOrBlock(){
-        if (this.anims.getName == 'skeleton_block_anim'){
-          //  if (this.anims.getProgress()!=1){
-                return false
-            //}
-        }
         return true
     }
 
@@ -151,7 +146,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         if (this.isSameY(scene)==false){
             return
         }
-        if (this.anims.getName() == 'skeleton_attack_anim'){
+        if (this.anims.getName() == 'goblin_attack_anim'){
             // attack animation complete
             if (this.anims.getProgress()>0.8){
                 scene.hero.playAfterDelay('hero_hurt_anim',60)
@@ -177,13 +172,13 @@ class Skeleton extends Phaser.GameObjects.Sprite{
         //     return false
         // } 
         if (this.goAttack && ((scene.hero.anims.getName() == 'hero_attack_anim'))){ 
-            if (this.anims.getProgress()>0.8){
+            if (this.anims.getProgress()==1){
                 if(scene.hero.scaleX != this.scaleX){
                     //console.log(this.health)
                     if (this.health > 0){
                         if (this.TakeHitOrBlock()){
-                            this.health -= 3
-                            this.play('skeleton_takehit_anim')
+                            this.health -= 5
+                            this.play('goblin_takehit_anim')
                             this.once('animationcomplete',()=>{
                                 this.blockAttackOrVulnerable()
                                 return
@@ -191,7 +186,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
                         }
                         this.blockAttackOrVulnerable()
                          
-                      //  this.play('skeleton_takehit_anim')
+                      //  this.play('goblin_takehit_anim')
                             
                         // this.blockAttackOrVulnerable()
                     }
@@ -205,8 +200,8 @@ class Skeleton extends Phaser.GameObjects.Sprite{
                // console.log(this.health)
                 if (this.health > 0){
                     if (this.TakeHitOrBlock()){
-                        this.health -= 7
-                        this.play('skeleton_takehit_anim')
+                        this.health -= 10
+                        this.play('goblin_takehit_anim')
                         this.once('animationcomplete',()=>{                    
                             this.blockAttackOrVulnerable()
                             return
@@ -240,17 +235,9 @@ class Skeleton extends Phaser.GameObjects.Sprite{
 
     blockAttackOrVulnerable(){
         var chance = Phaser.Math.Between(0,100)
-        if (chance < 30){
-            this.play('skeleton_block_anim')
-            this.once('animationcomplete',()=>{
-                this.play('skeleton_attack_anim')    
-            })
-            return
-        }
         if (chance < 60){  
-            this.play('skeleton_attack_anim')
-            this.once('animationcomplete',()=>{
-                this.play('skeleton_block_anim')    
+            this.play('goblin_attack_anim')
+            this.once('animationcomplete',()=>{   
             })
           return
         } 
@@ -259,7 +246,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
 
     callDeath(scene){
         if (scene.heroHealth <= 0){
-            this.play('skeleton_death_anim')
+            this.play('goblin_death_anim')
             this.once('animationcomplete',()=>{
                 this.greenhealthIndicator.destroy()
                 this.redhealthIndicator.destroy()
@@ -267,11 +254,11 @@ class Skeleton extends Phaser.GameObjects.Sprite{
             })
             return
         }
-        if (this.anims.getName() == 'skeleton_death_anim'){
+        if (this.anims.getName() == 'goblin_death_anim'){
             return
         }
         if (this.health <= 0){
-            this.play('skeleton_death_anim')
+            this.play('goblin_death_anim')
             this.once('animationcomplete',()=>{
                 this.greenhealthIndicator.destroy()
                 this.redhealthIndicator.destroy()
@@ -282,7 +269,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
             return
         }
     //     this.once('animationcomplete',()=>{
-    //         this.play('skeleton_death_anim')
+    //         this.play('goblin_death_anim')
     //         try{
     //             this.once('animationcomplete',()=>{
     //                 this.destroy()
@@ -296,14 +283,14 @@ class Skeleton extends Phaser.GameObjects.Sprite{
     
     isHeroTakeHit(scene){
         // // console.log(scene.hero.anims.getName())
-        // // //hero hurt skeleton
+        // // //hero hurt goblin
         // if (scene.hero.anims.getName() == 'hero_attack_anim'){
         //   //  console.log()
         //     console.log(this.health)
         //     this.health -= 1
-        //     this.play('skeleton_takehit_anim')
+        //     this.play('goblin_takehit_anim')
         //     this.once('animationcomplete',()=>{
-        //         this.play('skeleton_attack_anim')
+        //         this.play('goblin_attack_anim')
         //     })
         //  }
     }
@@ -319,7 +306,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
 
     getDirection(heroX, thisX){
         // within enemy's range
-        // if (this.anims.getName() == 'skeleton_takehit_anim'){
+        // if (this.anims.getName() == 'goblin_takehit_anim'){
         //     return 0
         // }
 

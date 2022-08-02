@@ -178,6 +178,8 @@ class Scene2 extends Phaser.Scene {
       this
     )
 
+
+    
     //slider FINALLLLLYYY
     this.img = this.add.circle(500, 20, 5, 0xff7873)
     this.img.slider = this.plugins.get('rexsliderplugin').add(this.img, {
@@ -261,9 +263,16 @@ class Scene2 extends Phaser.Scene {
     }
 
     this.enemies = this.physics.add.group()
-    for (var i = 0; i < 5; i++) {
-      new Skeleton(this)
+    for (var i = 0; i < 10; i++) {
+      if (Phaser.Math.Between(0,1)==0){
+        new Skeleton(this)
+      }
+      else {
+        new Goblin(this)
+      }
     }
+
+    
 
   }
   checkIfHeroOnTopOfBuilding () {
@@ -408,7 +417,9 @@ class Scene2 extends Phaser.Scene {
 
   checkSkeletonNumber () {
     if (this.enemies.getChildren().length < 5) {
-      this.spawnSkeleton()
+
+        this.spawnEnemy()
+
       console.log(this.enemies.getChildren().length)
     }
   }
@@ -739,7 +750,12 @@ class Scene2 extends Phaser.Scene {
   // }
 
   spawnSkeleton () {
-    var skeleton = new Skeleton(this)
+    if (Phaser.Math.Between(0,1)==0){
+      new Skeleton(this)
+    } else {
+      new Goblin(this)
+    }
+    
   }
 
   destroyObj (pointer, gameObject) {

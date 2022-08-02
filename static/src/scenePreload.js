@@ -147,6 +147,7 @@ class Scene1 extends Phaser.Scene {
       }
     )
 
+    // Skeleton
     this.load.spritesheet(
       'skeleton_idle',
       'static/assets/spritesheets/monsters/Skeleton/Idle.png',
@@ -200,6 +201,55 @@ class Scene1 extends Phaser.Scene {
         frameHeight: 150
       }
     )
+
+    // Goblin
+     this.load.spritesheet(
+      'goblin_idle',
+      'static/assets/spritesheets/monsters/Goblin/Idle.png',
+      {
+        frameWidth: 150,
+        frameHeight: 150
+      }
+    )
+
+    this.load.spritesheet(
+      'goblin_run',
+      'static/assets/spritesheets/monsters/Goblin/Run.png',
+      {
+        frameWidth: 150,
+        frameHeight: 150
+      }
+    )
+
+    this.load.spritesheet(
+      'goblin_attack',
+      'static/assets/spritesheets/monsters/Goblin/Attack.png',
+      {
+        frameWidth: 150,
+        frameHeight: 150
+      }
+    )
+
+    this.load.spritesheet(
+      'goblin_takehit',
+      'static/assets/spritesheets/monsters/Goblin/Take Hit.png',
+      {
+        frameWidth: 150,
+        frameHeight: 150
+      }
+    )
+
+    this.load.spritesheet(
+      'goblin_death',
+      'static/assets/spritesheets/monsters/Goblin/Death.png',
+      {
+        frameWidth: 150,
+        frameHeight: 150
+      }
+    )
+
+
+
 
     this.load.spritesheet('miko', 'static/assets/spritesheets/miko.png', {
       frameWidth: 561,
@@ -392,6 +442,7 @@ class Scene1 extends Phaser.Scene {
       repeat: 0
     })
 
+    // Skeleton
     this.anims.create({
       key: 'skeleton_idle_anim',
       frames: this.anims.generateFrameNumbers('skeleton_idle', {
@@ -452,6 +503,58 @@ class Scene1 extends Phaser.Scene {
       repeat: 0
     })
 
+    // Goblin
+    this.anims.create({
+      key: 'goblin_idle_anim',
+      frames: this.anims.generateFrameNumbers('goblin_idle', {
+        start: 0,
+        end: 3
+      }),
+      frameRate: 5,
+      repeat: -1
+    })
+
+    this.anims.create({
+      key: 'goblin_run_anim',
+      frames: this.anims.generateFrameNumbers('goblin_run', {
+        start: 0,
+        end: 3
+      }),
+      frameRate: 5,
+      repeat: -1
+    })
+
+    this.anims.create({
+      key: 'goblin_attack_anim',
+      frames: this.anims.generateFrameNumbers('goblin_attack', {
+        start: 1,
+        end: 7
+      }),
+      frameRate: 15,
+      repeat: -1
+    })
+
+    this.anims.create({
+      key: 'goblin_takehit_anim',
+      frames: this.anims.generateFrameNumbers('goblin_takehit', {
+        start: 0,
+        end: 3
+      }),
+      frameRate: 5,
+      repeat: 0
+    })
+
+    this.anims.create({
+      key: 'goblin_death_anim',
+      frames: this.anims.generateFrameNumbers('goblin_death', {
+        start: 0,
+        end: 2
+      }),
+      frameRate: 5,
+      repeat: 0
+    })
+
+    //MMiko
     this.anims.create({
       key: 'miko_anim',
       frames: this.anims.generateFrameNumbers('miko'),
