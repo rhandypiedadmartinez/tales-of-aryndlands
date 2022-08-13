@@ -139,7 +139,7 @@ class Skeleton extends Phaser.GameObjects.Sprite{
     isSameY(scene){
         var y1 = scene.hero.y - 2
         var y2 = this.y - this.offsetY
-        if (y1==y2){
+        if (y1 < y2 + 80 && y1 > y2 - 80){
             //console.log(y1 + ' ' + y2)
             return true
         }
