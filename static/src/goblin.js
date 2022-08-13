@@ -19,8 +19,8 @@ class Goblin extends Phaser.GameObjects.Sprite{
 
         this.offsetY = 10
         
-        this.greenhealthIndicator = scene.add.rectangle(this.x,this.y-50, 20, 3, 0x00FF00);
-        this.redhealthIndicator = scene.add.rectangle(this.x,this.y-50, 20, 3, 0xFF0000);
+        this.greenhealthIndicator = scene.add.rectangle(this.x,this.y-20, 20, 3, 0x00FF00);
+        this.redhealthIndicator = scene.add.rectangle(this.x,this.y-20, 20, 3, 0xFF0000);
         
         this.greenhealthIndicator.setDepth(3)
         this.redhealthIndicator.setDepth(2)

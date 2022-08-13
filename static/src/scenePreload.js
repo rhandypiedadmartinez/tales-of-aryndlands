@@ -56,7 +56,7 @@ class Scene1 extends Phaser.Scene {
       }
     )
 
-    //Hero Spritesheets
+    /////////////////////////Hero Spritesheets///////////////////////////////
     this.load.spritesheet(
       'hero_idle',
       'static/assets/spritesheets/knight/Idle.png',
@@ -157,7 +157,7 @@ class Scene1 extends Phaser.Scene {
       }
     )
 
-    // Skeleton
+    /////////////////////////////////// Skeleton //////////////////////////////
     this.load.spritesheet(
       'skeleton_idle',
       'static/assets/spritesheets/monsters/Skeleton/Idle.png',
@@ -212,7 +212,7 @@ class Scene1 extends Phaser.Scene {
       }
     )
 
-    // Goblin
+    ////////////////////////////////////// Goblin ///////////////////////////////
      this.load.spritesheet(
       'goblin_idle',
       'static/assets/spritesheets/monsters/Goblin/Idle.png',
@@ -259,8 +259,45 @@ class Scene1 extends Phaser.Scene {
     )
 
 
+    ////////////////////////// Flying Eye ////////////////////////////////
+      this.load.spritesheet(
+        'eye_flight',
+        'static/assets/spritesheets/monsters/Flying \eye/Flight.png',
+        {
+          frameWidth: 150,
+          frameHeight: 150
+        }
+      )
+  
+      this.load.spritesheet(
+        'eye_attack',
+        'static/assets/spritesheets/monsters/Flying eye/Attack.png',
+        {
+          frameWidth: 150,
+          frameHeight: 150
+        }
+      )
+  
+      this.load.spritesheet(
+        'eye_takehit',
+        'static/assets/spritesheets/monsters/Flying eye/Take Hit.png',
+        {
+          frameWidth: 150,
+          frameHeight: 150
+        }
+      )
+  
+      this.load.spritesheet(
+        'eye_death',
+        'static/assets/spritesheets/monsters/Flying eye/Death.png',
+        {
+          frameWidth: 150,
+          frameHeight: 150
+        }
+      )
 
 
+    ///////////////////////// Decorations ///////////////////////////////////
     this.load.spritesheet('miko', 'static/assets/spritesheets/miko.png', {
       frameWidth: 561,
       frameHeight: 1105
@@ -523,7 +560,7 @@ class Scene1 extends Phaser.Scene {
       repeat: 0
     })
 
-    // Goblin
+    /////////////////////// Goblin ///////////////////////////
     this.anims.create({
       key: 'goblin_idle_anim',
       frames: this.anims.generateFrameNumbers('goblin_idle', {
@@ -574,7 +611,48 @@ class Scene1 extends Phaser.Scene {
       repeat: 0
     })
 
-    //MMiko
+     /////////////////////// Fying Eye ///////////////////////////
+     this.anims.create({
+      key: 'eye_flight_anim',
+      frames: this.anims.generateFrameNumbers('eye_flight', {
+        start: 0,
+        end: 3
+      }),
+      frameRate: 10,
+      repeat: -1
+    })
+
+    this.anims.create({
+      key: 'eye_attack_anim',
+      frames: this.anims.generateFrameNumbers('eye_attack', {
+        start: 1,
+        end: 7
+      }),
+      frameRate: 15,
+      repeat: -1
+    })
+
+    this.anims.create({
+      key: 'eye_takehit_anim',
+      frames: this.anims.generateFrameNumbers('eye_takehit', {
+        start: 0,
+        end: 3
+      }),
+      frameRate: 5,
+      repeat: 0
+    })
+
+    this.anims.create({
+      key: 'eye_death_anim',
+      frames: this.anims.generateFrameNumbers('eye_death', {
+        start: 0,
+        end: 2
+      }),
+      frameRate: 5,
+      repeat: 0
+    })
+
+    ///////////////////////////// Miko ////////////////////////
     this.anims.create({
       key: 'miko_anim',
       frames: this.anims.generateFrameNumbers('miko'),

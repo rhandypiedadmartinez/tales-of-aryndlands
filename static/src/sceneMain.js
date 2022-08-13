@@ -32,7 +32,7 @@ class Scene2 extends Phaser.Scene {
       rate: 1,
       detune: 1,
       seek: 1,
-      loop: false,
+      loop: true,
       delay: 0
     }
 
@@ -803,10 +803,13 @@ class Scene2 extends Phaser.Scene {
   // }
 
   spawnEnemy () {
-    if (Phaser.Math.Between(0, 1) == 0) {
+    var rand_int = Phaser.Math.Between(0, 2)
+    if (rand_int == 0) {
       new Skeleton(this)
-    } else {
+    } else if (rand_int == 1){
       new Goblin(this)
+    } else {
+      new FlyingEye(this)
     }
   }
 
